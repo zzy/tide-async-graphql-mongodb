@@ -5,9 +5,13 @@ authors = ["zzy <9809920@qq.com>"]
 edition = "2018"
 
 [dependencies]
-tide = "0.15.0"
-async-std = { version = "1.8.0", features = ["attributes"] }
-dotenv = "0.15.0"
+tide = "0.15"
+async-std = { version = "1.8", features = ["attributes"] }
+dotenv = "0.15"
 
-mongodb = "1.1.1"
+mongodb = "1.1"
+bson = "1.1"
+
+async-graphql = "2.4"
+async-graphql-tide = "2.4"
 
