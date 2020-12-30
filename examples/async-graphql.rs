@@ -65,10 +65,7 @@ struct NewUser {
 
 impl NewUser {
     fn into_internal(self) -> User {
-        User {
-            id: None,
-            first_name: self.first_name,
-        }
+        User { id: None, first_name: self.first_name }
     }
 }
 
@@ -81,18 +78,9 @@ pub struct QueryRoot;
 impl QueryRoot {
     /// Get all Users,
     async fn all_users1(&self) -> Vec<User> {
-        let user1 = User {
-            id: Some(12),
-            first_name: "Alice".to_string(),
-        };
-        let user2 = User {
-            id: Some(22),
-            first_name: "Jack".to_string(),
-        };
-        let user3 = User {
-            id: Some(32),
-            first_name: "Tom".to_string(),
-        };
+        let user1 = User { id: Some(12), first_name: "Alice".to_string() };
+        let user2 = User { id: Some(22), first_name: "Jack".to_string() };
+        let user3 = User { id: Some(32), first_name: "Tom".to_string() };
 
         vec![user1, user2, user3]
     }
@@ -147,9 +135,8 @@ async fn main() -> Result<(), std::io::Error> {
     tide::log::start();
 
     // let mut schema = Schema::new(QueryRoot, MutationRoot, EmptySubscription);
-    let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription)
-        .data(Users::default())
-        .finish();
+    let schema =
+        Schema::build(QueryRoot, MutationRoot, EmptySubscription).data(Users::default()).finish();
 
     let mut app = tide::with_state(State(schema));
 

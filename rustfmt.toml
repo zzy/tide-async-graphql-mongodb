@@ -1,4 +1,11 @@
 edition = "2018"
+
 indent_style = "Block"
-max_width = 100
-reorder_imports = true
+reorder_imports = false
+merge_derives = false
+use_small_heuristics = "Max"
+
+error_on_line_overflow = true
+error_on_unformatted = true
+
+ignore = []
