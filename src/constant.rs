@@ -8,10 +8,40 @@ lazy_static! {
 
         let mut map = HashMap::new();
 
-        map.insert("GRAPHQL_ADDRESS", dotenv::var("GRAPHQL_ADDRESS").unwrap());
-        map.insert("GRAPHQL_PORT", dotenv::var("GRAPHQL_PORT").unwrap());
-        map.insert("GRAPHQL_PATH", dotenv::var("GRAPHQL_PATH").unwrap());
-        map.insert("GRAPHIQL_PATH", dotenv::var("GRAPHIQL_PATH").unwrap());
+        map.insert(
+            "WEB_ADDRESS",
+            dotenv::var("WEB_ADDRESS").expect("Expected WEB_ADDRESS to be set in env!"),
+        );
+        map.insert(
+            "WEB_PORT",
+            dotenv::var("WEB_PORT").expect("Expected WEB_PORT to be set in env!"),
+        );
+
+        map.insert(
+            "GRAPHQL_ADDRESS",
+            dotenv::var("GRAPHQL_ADDRESS").expect("Expected GRAPHQL_ADDRESS to be set in env!"),
+        );
+        map.insert(
+            "GRAPHQL_PORT",
+            dotenv::var("GRAPHQL_PORT").expect("Expected GRAPHQL_PORT to be set in env!"),
+        );
+        map.insert(
+            "GRAPHQL_PATH",
+            dotenv::var("GRAPHQL_PATH").expect("Expected GRAPHQL_PATH to be set in env!"),
+        );
+        map.insert(
+            "GRAPHIQL_PATH",
+            dotenv::var("GRAPHIQL_PATH").expect("Expected GRAPHIQL_PATH to be set in env!"),
+        );
+
+        map.insert(
+            "MONGODB_URI",
+            dotenv::var("MONGODB_URI").expect("Expected MONGODB_URI to be set in env!"),
+        );
+        map.insert(
+            "DB_BUDSHOME",
+            dotenv::var("DB_BUDSHOME").expect("Expected DB_BUDSHOME to be set in env!"),
+        );
 
         map
     };
