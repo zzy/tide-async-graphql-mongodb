@@ -78,14 +78,17 @@ impl MutationRoot {
 }
 
 pub async fn build_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription> {
-    let client = mongodb::Client::with_uri_str(ENV.get("MONGODB_URI").unwrap())
-        .await
-        .expect("Failed to initialize database!");
-    let db_budshome = client.database(ENV.get("DB_BUDSHOME").unwrap());
+    // let client = mongodb::Client::with_uri_str(ENV.get("MONGODB_URI").unwrap())
+    //     .await
+    //     .expect("Failed to initialize database!");
+    // let db_budshome = client.database(ENV.get("DB_BUDSHOME").unwrap());
+    let mongo_ds = mongo::ds().await;
+    // let _db_budshome = mongo_ds.db_budshome;
+    // let _db_yazhijia = mongo_ds.db_yazhijia;
 
     // let mut schema = Schema::new(QueryRoot, MutationRoot, EmptySubscription)
     Schema::build(QueryRoot, MutationRoot, EmptySubscription)
-        .data(mongo::DataSource { client: client, db_budshome: db_budshome })
+        .data(mongo_ds)
         .data(Users::default())
         .finish()
 }

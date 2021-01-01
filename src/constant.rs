@@ -39,8 +39,12 @@ lazy_static! {
             dotenv::var("MONGODB_URI").expect("Expected MONGODB_URI to be set in env!"),
         );
         map.insert(
-            "DB_BUDSHOME",
-            dotenv::var("DB_BUDSHOME").expect("Expected DB_BUDSHOME to be set in env!"),
+            "MONGODB_BUDSHOME",
+            dotenv::var("MONGODB_BUDSHOME").expect("Expected MONGODB_BUDSHOME to be set in env!"),
+        );
+        map.insert(
+            "MONGODB_YAZHIJIA",
+            dotenv::var("MONGODB_YAZHIJIA").expect("Expected MONGODB_YAZHIJIA to be set in env!"),
         );
 
         map
