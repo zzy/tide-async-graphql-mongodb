@@ -55,6 +55,20 @@ impl QueryRoot {
 
     /// Get all Users
     async fn all_users2(&self, ctx: &Context<'_>) -> Vec<User> {
+        let test = &ctx.data_unchecked::<mongo::DataSource>().db_budshome;
+        println!("{:?}", test.name());
+
+        for collection_name in test.list_collection_names(None).await {
+            println!("{:?}", collection_name);
+        }
+
+        let test2 = &ctx.data_unchecked::<mongo::DataSource>().db_yazhijia;
+        println!("{:?}", test2.name());
+
+        for collection_name in test2.list_collection_names(None).await {
+            println!("{:?}", collection_name);
+        }
+
         let users = ctx.data_unchecked::<Users>().0.read().await;
 
         users.iter().cloned().collect()
@@ -78,13 +92,7 @@ impl MutationRoot {
 }
 
 pub async fn build_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription> {
-    // let client = mongodb::Client::with_uri_str(ENV.get("MONGODB_URI").unwrap())
-    //     .await
-    //     .expect("Failed to initialize database!");
-    // let db_budshome = client.database(ENV.get("DB_BUDSHOME").unwrap());
-    let mongo_ds = mongo::ds().await;
-    // let _db_budshome = mongo_ds.db_budshome;
-    // let _db_yazhijia = mongo_ds.db_yazhijia;
+    let mongo_ds = mongo::DataSource::init().await;
 
     // let mut schema = Schema::new(QueryRoot, MutationRoot, EmptySubscription)
     Schema::build(QueryRoot, MutationRoot, EmptySubscription)

@@ -13,14 +13,14 @@ impl DataSource {
     pub async fn client(&self) -> Client {
         self.client.clone()
     }
-}
 
-pub async fn ds() -> DataSource {
-    let client = Client::with_uri_str(ENV.get("MONGODB_URI").unwrap())
-        .await
-        .expect("Failed to initialize database!");
-    let db_budshome = client.database(ENV.get("MONGODB_BUDSHOME").unwrap());
-    let db_yazhijia = client.database(ENV.get("MONGODB_YAZHIJIA").unwrap());
+    pub async fn init() -> DataSource {
+        let client = Client::with_uri_str(ENV.get("MONGODB_URI").unwrap())
+            .await
+            .expect("Failed to initialize database!");
+        let db_budshome = client.database(ENV.get("MONGODB_BUDSHOME").unwrap());
+        let db_yazhijia = client.database(ENV.get("MONGODB_YAZHIJIA").unwrap());
 
-    DataSource { client: client, db_budshome: db_budshome, db_yazhijia: db_yazhijia }
+        DataSource { client: client, db_budshome: db_budshome, db_yazhijia: db_yazhijia }
+    }
 }
