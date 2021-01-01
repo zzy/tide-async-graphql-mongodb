@@ -1,14 +1,15 @@
 mod constant;
 mod schema;
+mod dbs;
 
 use crate::constant::ENV;
-use crate::schema::{State, init_schema, graphql, graphiql};
+use crate::schema::{State, build_schema, graphql, graphiql};
 
 #[async_std::main]
 async fn main() -> Result<(), std::io::Error> {
     tide::log::start();
 
-    let mut app = tide::with_state(State(init_schema().await));
+    let mut app = tide::with_state(State(build_schema().await));
 
     app.at("/").get(tide::Redirect::new(ENV.get("GRAPHIQL_PATH").unwrap()));
     // app.at(ENV.get("GRAPHQL_PATH").unwrap()).post(async_graphql_tide::endpoint(schema));

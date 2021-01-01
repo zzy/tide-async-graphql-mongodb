@@ -7,6 +7,7 @@ use async_graphql::http::{playground_source, GraphQLPlaygroundConfig, receive_js
 use async_graphql::{Schema, Context, EmptySubscription};
 
 use crate::constant::ENV;
+use crate::dbs::mongo;
 
 #[derive(Clone)]
 struct User {
@@ -76,9 +77,17 @@ impl MutationRoot {
     }
 }
 
-pub async fn init_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription> {
+pub async fn build_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription> {
+    let client = mongodb::Client::with_uri_str(ENV.get("MONGODB_URI").unwrap())
+        .await
+        .expect("Failed to initialize database!");
+    let db_budshome = client.database(ENV.get("DB_BUDSHOME").unwrap());
+
     // let mut schema = Schema::new(QueryRoot, MutationRoot, EmptySubscription)
-    Schema::build(QueryRoot, MutationRoot, EmptySubscription).data(Users::default()).finish()
+    Schema::build(QueryRoot, MutationRoot, EmptySubscription)
+        .data(mongo::DataSource { client: client, db_budshome: db_budshome })
+        .data(Users::default())
+        .finish()
 }
 
 #[derive(Clone)]
