@@ -1,6 +1,6 @@
 use crate::constant::ENV;
 
-use mongodb::{Client, Database};
+use mongodb::{Client, options::ClientOptions, Database};
 
 pub struct DataSource {
     client: Client,
@@ -15,9 +15,13 @@ impl DataSource {
     }
 
     pub async fn init() -> DataSource {
-        let client = Client::with_uri_str(ENV.get("MONGODB_URI").unwrap())
+        let mut client_options = ClientOptions::parse(ENV.get("MONGODB_URI").unwrap())
             .await
-            .expect("Failed to initialize database!");
+            .expect("Failed to parse options!");
+        client_options.app_name = Some("tide-async-graphql-mongodb".to_string());
+
+        let client = Client::with_options(client_options).expect("Failed to initialize database!");
+
         let db_budshome = client.database(ENV.get("MONGODB_BUDSHOME").unwrap());
         let db_yazhijia = client.database(ENV.get("MONGODB_YAZHIJIA").unwrap());
 
