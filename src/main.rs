@@ -7,10 +7,13 @@ use crate::schema::{State, build_schema, graphql, graphiql};
 
 #[async_std::main]
 async fn main() -> Result<(), std::io::Error> {
+    // tide logger
     tide::log::start();
 
+    // Initialize the application with state.
     let mut app = tide::with_state(State(build_schema().await));
 
+    //environment variables defined in .env file
     app.at("/").get(tide::Redirect::new(ENV.get("GRAPHIQL_PATH").unwrap()));
     // app.at(ENV.get("GRAPHQL_PATH").unwrap()).post(async_graphql_tide::endpoint(schema));
     app.at(ENV.get("GRAPHQL_PATH").unwrap()).post(graphql);

@@ -3,6 +3,7 @@ use lazy_static::lazy_static;
 use std::collections::HashMap;
 
 lazy_static! {
+    // environment variables defined in .env file
     pub static ref ENV: HashMap<&'static str, String> = {
         dotenv().ok();
 

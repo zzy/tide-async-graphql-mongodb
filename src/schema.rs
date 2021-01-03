@@ -92,8 +92,15 @@ impl MutationRoot {
 }
 
 pub async fn build_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription> {
+    // get mongodb datasource.
+    // It can be added to:
+    // 1. As global data for async-graphql.
+    // 2. As application scope state of Tide
+    // In product, I recommend lazy-static.rs. 
     let mongo_ds = mongo::DataSource::init().await;
 
+    // The root object for the query and Mutatio, and use EmptySubscription.
+    // Add global mongodb datasource  in the schema object.
     // let mut schema = Schema::new(QueryRoot, MutationRoot, EmptySubscription)
     Schema::build(QueryRoot, MutationRoot, EmptySubscription)
         .data(mongo_ds)
@@ -101,6 +108,7 @@ pub async fn build_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription
         .finish()
 }
 
+//  Tide application scope state.
 #[derive(Clone)]
 pub struct State(pub Schema<QueryRoot, MutationRoot, EmptySubscription>);
 
