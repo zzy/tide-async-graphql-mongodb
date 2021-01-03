@@ -5,7 +5,6 @@ use mongodb::{Client, options::ClientOptions, Database};
 pub struct DataSource {
     client: Client,
     pub db_budshome: Database,
-    pub db_yazhijia: Database,
 }
 
 #[allow(dead_code)]
@@ -28,9 +27,8 @@ impl DataSource {
 
         // Get a handle to a database.
         let db_budshome = client.database(ENV.get("MONGODB_BUDSHOME").unwrap());
-        let db_yazhijia = client.database(ENV.get("MONGODB_YAZHIJIA").unwrap());
 
         // return mongodb datasource.
-        DataSource { client: client, db_budshome: db_budshome, db_yazhijia: db_yazhijia }
+        DataSource { client: client, db_budshome: db_budshome }
     }
 }

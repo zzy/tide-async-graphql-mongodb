@@ -62,13 +62,6 @@ impl QueryRoot {
             println!("{:?}", collection_name);
         }
 
-        let test2 = &ctx.data_unchecked::<mongo::DataSource>().db_yazhijia;
-        println!("{:?}", test2.name());
-
-        for collection_name in test2.list_collection_names(None).await {
-            println!("{:?}", collection_name);
-        }
-
         let users = ctx.data_unchecked::<Users>().0.read().await;
 
         users.iter().cloned().collect()
@@ -92,11 +85,10 @@ impl MutationRoot {
 }
 
 pub async fn build_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription> {
-    // get mongodb datasource.
-    // It can be added to:
+    // get mongodb datasource. It can be added to:
     // 1. As global data for async-graphql.
     // 2. As application scope state of Tide
-    // In product, I recommend lazy-static.rs. 
+    // 3. In product, I recommend lazy-static.rs. 
     let mongo_ds = mongo::DataSource::init().await;
 
     // The root object for the query and Mutatio, and use EmptySubscription.
