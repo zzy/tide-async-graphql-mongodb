@@ -1,7 +1,9 @@
 mod constant;
-mod gql;
 mod dbs;
+mod gql;
+
 mod users;
+mod projects;
 
 use crate::constant::ENV;
 

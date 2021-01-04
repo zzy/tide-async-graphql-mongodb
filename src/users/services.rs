@@ -6,8 +6,7 @@ use crate::users::models::{User, NewUser};
 pub async fn add_user(db: Database, new_user: NewUser) -> User {
     let coll = db.collection("users");
 
-    let exist_document =
-        coll.find_one(Some(bson::doc! { "email": &new_user.email }), None).await.unwrap();
+    let exist_document = coll.find_one(bson::doc! {"email": &new_user.email}, None).await.unwrap();
     if let Some(_document) = exist_document {
         println!("MongoDB document is exist!");
     } else {
@@ -24,7 +23,7 @@ pub async fn add_user(db: Database, new_user: NewUser) -> User {
     }
 
     let user_document = coll
-        .find_one(Some(bson::doc! { "email": &new_user.email }), None)
+        .find_one(bson::doc! {"email": &new_user.email}, None)
         .await
         .expect("Document not found")
         .unwrap();
