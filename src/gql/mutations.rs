@@ -1,20 +1,18 @@
 use async_graphql::Context;
 
-use crate::users::models::{User, NewUser};
-use crate::users::services::Users;
+use crate::users::{
+    self,
+    models::{User, NewUser},
+};
+use crate::dbs::mongo::DataSource;
 
 pub struct MutationRoot;
 
 #[async_graphql::Object]
 impl MutationRoot {
     /// Add new user
-    async fn add_user(&self, ctx: &Context<'_>, user: NewUser) -> User {
-        let mut users = ctx.data_unchecked::<Users>().0.write().await;
-        let mut user = user.into_internal();
-
-        user.id = Some((users.len() + 1) as u16);
-        users.push(user.clone());
-
-        user
+    async fn add_user(&self, ctx: &Context<'_>, new_user: NewUser) -> User {
+        let db = ctx.data_unchecked::<DataSource>().db_budshome.clone();
+        users::services::add_user(db, new_user).await
     }
 }

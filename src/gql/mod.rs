@@ -15,8 +15,6 @@ use crate::dbs::mongo;
 use crate::gql::queries::QueryRoot;
 use crate::gql::mutations::MutationRoot;
 
-use crate::users::services::Users;
-
 pub async fn build_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription> {
     // get mongodb datasource. It can be added to:
     // 1. As global data for async-graphql.
@@ -27,10 +25,7 @@ pub async fn build_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription
     // The root object for the query and Mutatio, and use EmptySubscription.
     // Add global mongodb datasource  in the schema object.
     // let mut schema = Schema::new(QueryRoot, MutationRoot, EmptySubscription)
-    Schema::build(QueryRoot, MutationRoot, EmptySubscription)
-        .data(mongo_ds)
-        .data(Users::default())
-        .finish()
+    Schema::build(QueryRoot, MutationRoot, EmptySubscription).data(mongo_ds).finish()
 }
 
 pub async fn graphql(req: Request<State>) -> tide::Result<impl Into<Response>> {

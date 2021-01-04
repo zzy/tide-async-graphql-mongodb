@@ -1,27 +1,29 @@
-#[derive(Clone)]
+use serde::{Serialize, Deserialize};
+use mongodb::bson::oid::ObjectId;
+
+#[derive(Serialize, Deserialize, Clone)]
 pub struct User {
-    pub id: Option<u16>,
-    pub first_name: String,
+    pub _id: ObjectId,
+    pub email: String,
+    pub username: String,
 }
 
 #[async_graphql::Object]
 impl User {
-    async fn id(&self) -> i32 {
-        self.id.unwrap_or(0) as i32
+    pub async fn id(&self) -> ObjectId {
+        self._id.clone()
     }
 
-    async fn first_name(&self) -> &str {
-        &self.first_name
+    pub async fn email(&self) -> &str {
+        self.email.as_str()
+    }
+
+    pub async fn username(&self) -> &str {
+        self.username.as_str()
     }
 }
-
-#[derive(async_graphql::InputObject)]
+#[derive(Serialize, Deserialize, async_graphql::InputObject)]
 pub struct NewUser {
-    first_name: String,
-}
-
-impl NewUser {
-    pub fn into_internal(self) -> User {
-        User { id: None, first_name: self.first_name }
-    }
+    pub email: String,
+    pub username: String,
 }

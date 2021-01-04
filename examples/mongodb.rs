@@ -1,4 +1,6 @@
 use mongodb::{Client, options::ClientOptions, bson::doc};
+use futures::stream::StreamExt;
+use mongodb::{bson::Bson, options::FindOptions};
 
 #[async_std::main]
 async fn main() {
@@ -24,4 +26,22 @@ async fn main() {
 
     // Insert some documents into the "budshome.books" collection.
     collection.insert_many(docs, None).await.expect("msg");
+
+    let filter = doc! { "author": "George Orwell" };
+    let find_options = FindOptions::builder().sort(doc! { "title": 1 }).build();
+    let mut cursor = collection.find(filter, find_options).await.unwrap();
+
+    // Iterate over the results of the cursor.
+    while let Some(result) = cursor.next().await {
+        match result {
+            Ok(document) => {
+                if let Some(title) = document.get("title").and_then(Bson::as_str) {
+                    println!("title: {}", title);
+                } else {
+                    println!("no title found");
+                }
+            }
+            Err(_) => return (),
+        }
+    }
 }

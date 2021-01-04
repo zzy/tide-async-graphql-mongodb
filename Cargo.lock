@@ -2512,8 +2512,10 @@ dependencies = [
  "async-std",
  "bson",
  "dotenv",
+ "futures",
  "lazy_static",
  "mongodb",
+ "serde",
  "tide",
 ]
 
