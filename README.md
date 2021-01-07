@@ -6,9 +6,10 @@
 
 - [x] User: query & mutation
 - [x] Project: query & mutation
-- [ ] User register
+- [x] User register
+- [x] Salt and hash a password with PBKDF2
 - [ ] Sign up & Sign in
-- [ ] Encrypt password & Change password
+- [ ] Change password
 - [ ] Profile Update
 - [ ] JSON web token authentication
 
@@ -86,7 +87,10 @@ Sample query for all users and every user's projects:
 Sample mutation for user:
 ```
 mutation {
-  addUser(newUser:{email:"lllll@teddds222t.com", username:"李四"}) {
+  addUser(newUser:{
+    email:"lllll@teddds222t.com", 
+    username:"李四"
+  }) {
     id
     email
     username
@@ -94,44 +98,4 @@ mutation {
 }
 ```
 
-Sample query for projects:
-```
-{
-  allProjects {
-    id
-    userId
-    subject
-    website
-  }
-}
-```
-
-Sample query for projects by user_id:
-```
-{
-  allProjectsByUser(userId: "5ff317fd005050e5006a2474") {
-    id
-    userId
-    subject
-    website
-  }
-}
-```
-
-Sample mutation for project:
-```
-mutation {
-  addProject(
-    newProject: {
-      userId: "5ff2fe82000c701100e10de4"
-      subject: "测试项目3"
-      website: "https://budshome.com"
-    }
-  ) {
-    id
-    userId
-    subject
-    website
-  }
-}
-```
+Sample query and mutation for projects was similar to users.
