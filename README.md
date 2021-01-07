@@ -4,14 +4,14 @@
 
 ## Features
 
-- [x] User: query & mutation
-- [x] Project: query & mutation
-- [x] User register
-- [x] Salt and hash a password with PBKDF2
-- [ ] Sign up & Sign in
-- [ ] Change password
-- [ ] Profile Update
-- [ ] JSON web token authentication
+- [x] User: query & mutation - 用户查询和变更
+- [x] Project: query & mutation - 项目查询和变更
+- [x] User register - 用户注册
+- [x] Salt and hash a password with PBKDF2 - 使用 PBKDF2 对密码进行加密（salt）和散列（hash）运算
+- [ ] Sign in & Sign out - 签入和注销
+- [ ] Change password - 修改密码
+- [ ] Profile Update - 资料更新
+- [ ] JSON web token authentication - JWT 整合
 
 ## Stacks
 
