@@ -1,25 +1,59 @@
 use futures::stream::StreamExt;
 use mongodb::Database;
-use async_graphql::ErrorExtensions;
+use async_graphql::{Error, ErrorExtensions};
 
 use crate::constant::GqlResult;
 use crate::users::models::{User, NewUser};
 
-use super::cred;
+// get user info by email
+pub async fn get_user_by_email(db: Database, email: &str) -> GqlResult<User> {
+    let coll = db.collection("users");
+
+    let exist_document = coll.find_one(bson::doc! {"email": email}, None).await;
+
+    if let Ok(user_document_exist) = exist_document {
+        if let Some(user_document) = user_document_exist {
+            let user: User = bson::from_bson(bson::Bson::Document(user_document)).unwrap();
+            Ok(user)
+        } else {
+            Err(Error::new("2-email").extend_with(|_, e| {
+                e.set("details", "Error converting the BSON object into a MongoDB document")
+            }))
+        }
+    } else {
+        Err(Error::new("1-email").extend_with(|_, e| e.set("details", "Document not found")))
+    }
+}
+
+// get user info by username
+pub async fn get_user_by_username(db: Database, username: &str) -> GqlResult<User> {
+    let coll = db.collection("users");
+
+    let exist_document = coll.find_one(bson::doc! {"username": username}, None).await;
+
+    if let Ok(user_document_exist) = exist_document {
+        if let Some(user_document) = user_document_exist {
+            let user: User = bson::from_bson(bson::Bson::Document(user_document)).unwrap();
+            Ok(user)
+        } else {
+            Err(Error::new("4-username").extend_with(|_, e| {
+                e.set("details", "Error converting the BSON object into a MongoDB document")
+            }))
+        }
+    } else {
+        Err(Error::new("3-username").extend_with(|_, e| e.set("details", "Document not found")))
+    }
+}
 
 pub async fn user_register(db: Database, mut new_user: NewUser) -> GqlResult<User> {
     let coll = db.collection("users");
 
-    let exist_document = coll
-        .find_one(
-            bson::doc! {"$or": [{"email": &new_user.email}, {"username": &new_user.username}]},
-            None,
-        )
-        .await
-        .unwrap();
-
-    if exist_document.is_none() {
-        new_user.password = cred::cred_encode(&new_user.username, &new_user.password).await;
+    if self::get_user_by_email(db.clone(), &new_user.email).await.is_ok() {
+        Err(Error::new("email exists").extend_with(|_, e| e.set("details", "1_EMAIL_EXIStS")))
+    } else if self::get_user_by_username(db.clone(), &new_user.username).await.is_ok() {
+        Err(Error::new("username exists").extend_with(|_, e| e.set("details", "2_USERNAME_EXISTS")))
+    } else {
+        new_user.password = super::cred::cred_encode(&new_user.username, &new_user.password).await;
         println!("{}", &new_user.password.len());
         let new_user_bson = bson::to_bson(&new_user).unwrap();
 
@@ -28,25 +62,17 @@ pub async fn user_register(db: Database, mut new_user: NewUser) -> GqlResult<Use
             coll.insert_one(document, None)
                 .await
                 .expect("Failed to insert into a MongoDB collection!");
+
+            self::get_user_by_email(db.clone(), &new_user.email).await
         } else {
-            println!("Error converting the BSON object into a MongoDB document");
-        };
-
-        let user_document = coll
-            .find_one(bson::doc! {"email": &new_user.email}, None)
-            .await
-            .expect("Document not found")
-            .unwrap();
-
-        let user: User = bson::from_bson(bson::Bson::Document(user_document)).unwrap();
-        Ok(user)
-    } else {
-        Err(async_graphql::Error::new("MyMessage")
-            .extend_with(|_, e| e.set("details", "CAN_NOT_FETCH")))
+            Err(Error::new("5-register").extend_with(|_, e| {
+                e.set("details", "Error converting the BSON object into a MongoDB document")
+            }))
+        }
     }
 }
 
-pub async fn all_users(db: Database) -> Vec<User> {
+pub async fn all_users(db: Database) -> GqlResult<Vec<User>> {
     let coll = db.collection("users");
 
     let mut users: Vec<User> = vec![];
@@ -67,5 +93,9 @@ pub async fn all_users(db: Database) -> Vec<User> {
         }
     }
 
-    users
+    if users.len() > 0 {
+        Ok(users)
+    } else {
+        Err(Error::new("6-all").extend_with(|_, e| e.set("details", "No records")))
+    }
 }

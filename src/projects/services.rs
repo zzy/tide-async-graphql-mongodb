@@ -1,7 +1,9 @@
 use futures::stream::StreamExt;
 use mongodb::Database;
 use bson::oid::ObjectId;
+use async_graphql::{Error, ErrorExtensions};
 
+use crate::constant::GqlResult;
 use crate::projects::models::{Project, NewProject};
 
 pub async fn add_project(db: Database, new_project: NewProject) -> Project {
@@ -42,7 +44,7 @@ pub async fn add_project(db: Database, new_project: NewProject) -> Project {
     project
 }
 
-pub async fn all_projects(db: Database) -> Vec<Project> {
+pub async fn all_projects(db: Database) -> GqlResult<Vec<Project>> {
     let coll = db.collection("projects");
 
     let mut projects: Vec<Project> = vec![];
@@ -63,10 +65,14 @@ pub async fn all_projects(db: Database) -> Vec<Project> {
         }
     }
 
-    projects
+    if projects.len() > 0 {
+        Ok(projects)
+    } else {
+        Err(Error::new("7-all-projects").extend_with(|_, e| e.set("details", "No records")))
+    }
 }
 
-pub async fn all_projects_by_user(db: Database, user_id: ObjectId) -> Vec<Project> {
+pub async fn all_projects_by_user(db: Database, user_id: ObjectId) -> GqlResult<Vec<Project>> {
     let coll = db.collection("projects");
 
     let mut projects: Vec<Project> = vec![];
@@ -87,5 +93,5 @@ pub async fn all_projects_by_user(db: Database, user_id: ObjectId) -> Vec<Projec
         }
     }
 
-    projects
+    Ok(projects)
 }
