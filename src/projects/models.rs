@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use mongodb::bson::oid::ObjectId;
+use bson::oid::ObjectId;
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Project {

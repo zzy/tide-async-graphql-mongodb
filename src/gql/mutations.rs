@@ -1,7 +1,7 @@
 use async_graphql::Context;
 
 use crate::dbs::mongo::DataSource;
-
+use crate::constant::GqlResult;
 use crate::users::{
     self,
     models::{User, NewUser},
@@ -16,9 +16,9 @@ pub struct MutationRoot;
 #[async_graphql::Object]
 impl MutationRoot {
     // Add new user
-    async fn add_user(&self, ctx: &Context<'_>, new_user: NewUser) -> User {
+    async fn user_register(&self, ctx: &Context<'_>, new_user: NewUser) -> GqlResult<User> {
         let db = ctx.data_unchecked::<DataSource>().db_budshome.clone();
-        users::services::add_user(db, new_user).await
+        users::services::user_register(db, new_user).await
     }
 
     // Add new project

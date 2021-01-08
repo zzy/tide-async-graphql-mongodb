@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use mongodb::bson::oid::ObjectId;
+use bson::oid::ObjectId;
 
 use crate::dbs::mongo::DataSource;
 use crate::projects::models::Project;
@@ -35,4 +35,5 @@ impl User {
 pub struct NewUser {
     pub email: String,
     pub username: String,
+    pub password: String,
 }

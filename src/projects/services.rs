@@ -1,6 +1,6 @@
 use futures::stream::StreamExt;
 use mongodb::Database;
-use mongodb::bson::oid::ObjectId;
+use bson::oid::ObjectId;
 
 use crate::projects::models::{Project, NewProject};
 

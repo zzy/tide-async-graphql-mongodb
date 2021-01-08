@@ -2,6 +2,8 @@ use dotenv::dotenv;
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 
+pub type GqlResult<T> = std::result::Result<T, async_graphql::Error>;
+
 lazy_static! {
     // environment variables defined in .env file
     pub static ref ENV: HashMap<&'static str, String> = {

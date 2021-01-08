@@ -84,18 +84,22 @@ Sample query for all users and every user's projects:
 }
 ```
 
-Sample mutation for user:
+Sample mutation for user register:
 ```
 mutation {
-  addUser(newUser:{
-    email:"lllll@teddds222t.com", 
-    username:"李四"
-  }) {
+  userRegister(
+    newUser: { 
+      email: "whoami@budshome.com", 
+      username: "我是谁", 
+      password: "wo#$shi^$shui" 
+    }
+  ) {
     id
     email
     username
   }
 }
+
 ```
 
 Sample query and mutation for projects was similar to users.
