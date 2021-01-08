@@ -38,3 +38,10 @@ pub struct NewUser {
     pub username: String,
     pub password: String,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Claims {
+    email: String,
+    username: String,
+    exp: usize,
+}

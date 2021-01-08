@@ -1,6 +1,8 @@
 use futures::stream::StreamExt;
 use mongodb::Database;
 use async_graphql::{Error, ErrorExtensions};
+use jsonwebtoken::errors::ErrorKind;
+use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 
 use crate::constant::GqlResult;
 use crate::users::models::{User, NewUser};
@@ -71,6 +73,10 @@ pub async fn user_register(db: Database, mut new_user: NewUser) -> GqlResult<Use
         }
     }
 }
+
+// pub async fn user_sign_in() ->  GqlResult<User> {
+
+// }
 
 pub async fn all_users(db: Database) -> GqlResult<Vec<User>> {
     let coll = db.collection("users");

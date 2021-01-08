@@ -1,5 +1,4 @@
 use std::num::NonZeroU32;
-use data_encoding::HEXUPPER;
 use ring::{digest, pbkdf2};
 
 static PBKDF2_ALG: pbkdf2::Algorithm = pbkdf2::PBKDF2_HMAC_SHA256;
@@ -10,9 +9,9 @@ async fn main() {
     let password = "%!@#$7654";
 
     let cred_en = cred_encode(username, password).await;
-    let cred_de = HEXUPPER.decode(&cred_en.as_bytes()).unwrap();
+    let cred_de = base64::decode(&cred_en.as_bytes()).unwrap();
 
-    println!("{}", &cred_en);
+    println!("{}, {}", &cred_en, &cred_en.len());
     println!("{:?}", &cred_de);
 
     let test33 = cred_verify(username, "%!@#$7655", &cred_en).await;
@@ -56,7 +55,7 @@ async fn cred_encode(username: &str, password: &str) -> String {
 
     println!("{:?}", cred);
 
-    HEXUPPER.encode(&cred)
+    base64::encode(&cred)
 }
 
 async fn cred_verify(username: &str, attempted_password: &str, actual_cred: &str) -> bool {
@@ -65,7 +64,7 @@ async fn cred_verify(username: &str, attempted_password: &str, actual_cred: &str
     println!("{}", actual_cred);
 
     let salt = salt(username).await;
-    let actual_cred_decode = HEXUPPER.decode(actual_cred.as_bytes()).unwrap();
+    let actual_cred_decode = base64::decode(actual_cred.as_bytes()).unwrap();
     println!("{:?}", actual_cred_decode);
 
     pbkdf2::verify(
