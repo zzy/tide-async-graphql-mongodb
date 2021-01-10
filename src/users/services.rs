@@ -90,7 +90,7 @@ pub async fn user_sign_in(db: Database, user_account: NewUser) -> GqlResult<User
         }
     }
 
-    if super::cred::cred_verify(&user.username, &user_account.password, &user.credential).await {
+    if super::cred::cred_verify(&user.username, &user_account.password, &user.cred).await {
         Ok(user)
     } else {
         Err(Error::new("user_sign_in").extend_with(|_, e| e.set("details", "Invalid credential")))
@@ -112,15 +112,15 @@ pub async fn all_users(db: Database) -> GqlResult<Vec<User>> {
                 let user = bson::from_bson(bson::Bson::Document(document)).unwrap();
                 users.push(user);
             }
-            Err(error) => {
-                println!("Error to find doc: {}", error);
-            }
+            Err(error) => Err(Error::new("6-all-users")
+                .extend_with(|_, e| e.set("details", format!("Error to find doc: {}", error))))
+            .unwrap(),
         }
     }
 
     if users.len() > 0 {
         Ok(users)
     } else {
-        Err(Error::new("6-all").extend_with(|_, e| e.set("details", "No records")))
+        Err(Error::new("6-all-users").extend_with(|_, e| e.set("details", "No records")))
     }
 }
