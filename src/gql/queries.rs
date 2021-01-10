@@ -3,23 +3,31 @@ use bson::oid::ObjectId;
 
 use crate::dbs::mongo::DataSource;
 use crate::constant::GqlResult;
-use crate::users::{self, models::User};
+use crate::users::{
+    self,
+    models::{User, NewUser},
+};
 use crate::projects::{self, models::Project};
 
 pub struct QueryRoot;
 
 #[async_graphql::Object]
 impl QueryRoot {
-    // Does email exist?
+    // get user info by email
     async fn get_user_by_email(&self, ctx: &Context<'_>, email: String) -> GqlResult<User> {
         let db = ctx.data_unchecked::<DataSource>().db_budshome.clone();
         users::services::get_user_by_email(db, &email).await
     }
 
-    // Does username exist?
+    // get user info by username
     async fn get_user_by_username(&self, ctx: &Context<'_>, username: String) -> GqlResult<User> {
         let db = ctx.data_unchecked::<DataSource>().db_budshome.clone();
         users::services::get_user_by_username(db, &username).await
+    }
+
+    async fn user_sign_in(&self, ctx: &Context<'_>, user_account: NewUser) -> GqlResult<User> {
+        let db = ctx.data_unchecked::<DataSource>().db_budshome.clone();
+        users::services::user_sign_in(db, user_account).await
     }
 
     // Get all Users,

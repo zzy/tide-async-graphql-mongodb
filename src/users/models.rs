@@ -11,6 +11,7 @@ pub struct User {
     pub _id: ObjectId,
     pub email: String,
     pub username: String,
+    pub credential: String,
 }
 
 #[async_graphql::Object]
