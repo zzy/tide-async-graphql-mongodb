@@ -15,7 +15,7 @@ Clean boilerplate for graphql services using tide, async-graphql, handlebars-rus
 
 ## Stacks
 
-- [Rust](https://www.rust-lang.org)
+- [Rust](https://www.rust-lang.org) - [中文资料集萃](https://budshome.com)
 - [Tide](https://github.com/http-rs/tide) - [中文文档](https://tide.budshome.com)
 - [async-graphql](https://crates.io/crates/async-graphql) - [中文文档](https://async-graphql.budshome.com)
 - [mongodb & mongo-rust-driver](https://crates.io/crates/mongodb)
