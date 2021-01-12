@@ -92,7 +92,7 @@ pub async fn user_sign_in(db: Database, unknown_user: NewUser) -> GqlResult<Sign
     if let Ok(user) = user_res {
         if super::cred::cred_verify(&user.username, &unknown_user.cred, &user.cred).await {
             let mut header = Header::default();
-            header.kid = Some("signing_key".to_owned());
+            // header.kid = Some("signing_key".to_owned());
             header.alg = Algorithm::HS512;
 
             let site_key = CFG.get("SITE_KEY").unwrap().as_bytes();
@@ -152,6 +152,75 @@ pub async fn all_users(db: Database, token: &str) -> GqlResult<Vec<User>> {
         }
     } else {
         Err(Error::new("6-all-users")
+            .extend_with(|_, e| e.set("details", format!("{}", token_data.err().unwrap()))))
+    }
+}
+
+// Change user password
+pub async fn user_change_password(
+    db: Database,
+    cur_password: &str,
+    new_password: &str,
+    token: &str,
+) -> GqlResult<User> {
+    let token_data = token_data(token).await;
+    if let Ok(data) = token_data {
+        let email = data.claims.email;
+        let user_res = self::get_user_by_email(db.clone(), &email).await;
+        if let Ok(mut user) = user_res {
+            if super::cred::cred_verify(&user.username, cur_password, &user.cred).await {
+                user.cred = super::cred::cred_encode(&user.username, new_password).await;
+
+                let coll = db.collection("users");
+                coll.update_one(
+                    bson::doc! {"_id": &user._id},
+                    bson::doc! {"$set": {"cred": &user.cred}},
+                    None,
+                )
+                .await
+                .expect("Failed to update a MongoDB collection!");
+
+                Ok(user)
+            } else {
+                Err(Error::new("user_change_password")
+                    .extend_with(|_, e| e.set("details", "Error verifying current passwordd")))
+            }
+        } else {
+            Err(Error::new("user_change_password")
+                .extend_with(|_, e| e.set("details", "User not exist")))
+        }
+    } else {
+        Err(Error::new("user_change_password")
+            .extend_with(|_, e| e.set("details", format!("{}", token_data.err().unwrap()))))
+    }
+}
+
+// update user profile
+pub async fn user_update_profile(db: Database, new_user: NewUser, token: &str) -> GqlResult<User> {
+    let token_data = token_data(token).await;
+    if let Ok(data) = token_data {
+        let email = data.claims.email;
+        let user_res = self::get_user_by_email(db.clone(), &email).await;
+        if let Ok(mut user) = user_res {
+            let coll = db.collection("users");
+
+            user.email = new_user.email.to_lowercase();
+            user.username = new_user.username.to_lowercase();
+
+            let user_bson = bson::to_bson(&user).unwrap();
+            let user_doc = user_bson.as_document().unwrap().to_owned();
+
+            coll.find_one_and_replace(bson::doc! {"_id": &user._id}, user_doc, None)
+                .await
+                .expect("Failed to replace a MongoDB collection!");
+
+            Ok(user)
+        } else {
+            Err(Error::new("user_update_profile")
+                .extend_with(|_, e| e.set("details", "User not exist")))
+        }
+    } else {
+        Err(Error::new("user_update_profile")
             .extend_with(|_, e| e.set("details", format!("{}", token_data.err().unwrap()))))
     }
 }

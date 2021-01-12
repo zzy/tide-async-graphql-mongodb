@@ -4,14 +4,14 @@ Clean boilerplate for graphql services using tide, async-graphql, handlebars-rus
 
 ## Features
 
-- [x] User: query & mutation - 用户查询和变更
-- [x] Project: query & mutation - 项目查询和变更
 - [x] User register - 用户注册
 - [x] Salt and hash a password with PBKDF2 - 使用 PBKDF2 对密码进行加密（salt）和散列（hash）运算
 - [x] Sign in - 签入
-- [ ] Change password - 修改密码
-- [ ] Profile Update - 资料更新
-- [x] JSON web token authentication - JWT 整合
+- [x] JSON web token authentication - JWT 鉴权整合
+- [x] Change password - 修改密码
+- [x] Profile Update - 资料更新
+- [x] User: query & mutation - 用户查询和变更
+- [x] Project: query & mutation - 项目查询和变更
 
 ## Stacks
 
@@ -56,7 +56,40 @@ cargo run
 
 GraphiQL: connect to http://localhost:8080/graphiql with browser.
 
-## Usage
+## Queries
+
+- getUserByEmail(...): User!
+- getUserByUsername(...): User!
+- userSignIn(...): SignInfo!
+- allUsers(...): [User!]!
+- allProjects: [Project!]!
+- allProjectsByUser(...): [Project!]!
+
+## MUTATIONS
+
+- userRegister(...): User!
+- userChangePassword(...): User!
+- userUpdateProfile(...): User!
+- addProject(...): Project!
+
+## Sample Usage
+
+Sample mutation for user register:
+```
+mutation {
+  userRegister(
+    newUser: { 
+      email: "example@budshome.com", 
+      username: "我是谁", 
+      password: "wo#$shi^$shui" 
+    }
+  ) {
+    id
+    email
+    username
+  }
+}
+```
 
 Sample query for user sign in:
 ```
@@ -93,24 +126,6 @@ When submit method `userSignIn`, a token would be generated, use this token for 
     }
   }
 }
-```
-
-Sample mutation for user register:
-```
-mutation {
-  userRegister(
-    newUser: { 
-      email: "example@budshome.com", 
-      username: "我是谁", 
-      password: "wo#$shi^$shui" 
-    }
-  ) {
-    id
-    email
-    username
-  }
-}
-
 ```
 
 Sample query and mutation for projects was similar to users.
