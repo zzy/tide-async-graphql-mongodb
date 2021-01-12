@@ -37,7 +37,7 @@ impl User {
 pub struct NewUser {
     pub email: String,
     pub username: String,
-    pub password: String,
+    pub cred: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

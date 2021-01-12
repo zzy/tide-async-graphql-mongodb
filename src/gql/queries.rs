@@ -25,9 +25,9 @@ impl QueryRoot {
         users::services::get_user_by_username(db, &username).await
     }
 
-    async fn user_sign_in(&self, ctx: &Context<'_>, user_account: NewUser) -> GqlResult<SignInfo> {
+    async fn user_sign_in(&self, ctx: &Context<'_>, unknown_user: NewUser) -> GqlResult<SignInfo> {
         let db = ctx.data_unchecked::<DataSource>().db_budshome.clone();
-        users::services::user_sign_in(db, user_account).await
+        users::services::user_sign_in(db, unknown_user).await
     }
 
     // Get all Users,

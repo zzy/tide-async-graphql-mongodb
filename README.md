@@ -1,6 +1,6 @@
 # tide-async-graphql-mongodb
 
-**NOT** complete - Clean boilerplate for graphql services using tide, async-graphql, handlebars-rust, and mongodb.
+Clean boilerplate for graphql services using tide, async-graphql, handlebars-rust, and mongodb.
 
 ## Features
 
@@ -8,7 +8,7 @@
 - [x] Project: query & mutation - 项目查询和变更
 - [x] User register - 用户注册
 - [x] Salt and hash a password with PBKDF2 - 使用 PBKDF2 对密码进行加密（salt）和散列（hash）运算
-- [x] Sign in & Sign out - 签入和注销
+- [x] Sign in - 签入
 - [ ] Change password - 修改密码
 - [ ] Profile Update - 资料更新
 - [x] JSON web token authentication - JWT 整合
@@ -44,7 +44,7 @@ MONGODB_URI=mongodb://mongo:mongo@localhost:27017
 MONGODB_BUDSHOME=budshome
 
 SITE_KEY=0F4EHz+1/hqVvZjuB8EcooQs1K6QKBvLUxqTHt4tpxE=
-TOKEN_EXP=10000000000
+CLAIM_EXP=10000000000
 ```
 
 Build & Run:
@@ -63,7 +63,7 @@ Sample query for user sign in:
 {
   userSignIn(
     userAccount: {
-      email: "0002@budshome.com"
+      email: "example@budshome.com"
       username: ""
       password: "wo#$shi^$shui"
     }
@@ -75,11 +75,11 @@ Sample query for user sign in:
 }
 ```
 
-After run userSignIn, a token would be generated, use this token for query all users and every user's projects:
+When submit method `userSignIn`, a token would be generated, use this token for query all users and every user's projects:
 ```
 {
   allUsers(
-    token: "fyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6InNpZ25pbmdfa2V5In0.eyJlbWFpbCI6IjAwMDJAYnVkc2hvbWUuY29tIiwidXNlcm5hbWUiOiLmiJHosIEyNDMyIiwiZXhwIjoxMDAwMDAwMDAwMH0.nRcd7EODwVJFx1pTHw3IJ1hV0EHtQnShmaLl_6DrJK6Pc91F_dQRMUV3yV6QRdamg-ikRUB1U0c-Gcn1e-fk3g"
+    token: "fyJ0eXAiOiJKV1Q..."
   ) {
     id
     email
@@ -100,7 +100,7 @@ Sample mutation for user register:
 mutation {
   userRegister(
     newUser: { 
-      email: "whoami@budshome.com", 
+      email: "example@budshome.com", 
       username: "我是谁", 
       password: "wo#$shi^$shui" 
     }
