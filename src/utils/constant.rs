@@ -5,8 +5,8 @@ use std::collections::HashMap;
 pub type GqlResult<T> = std::result::Result<T, async_graphql::Error>;
 
 lazy_static! {
-    // environment variables defined in .env file
-    pub static ref ENV: HashMap<&'static str, String> = {
+    // CFG variables defined in .env file
+    pub static ref CFG: HashMap<&'static str, String> = {
         dotenv().ok();
 
         let mut map = HashMap::new();
@@ -44,6 +44,14 @@ lazy_static! {
         map.insert(
             "MONGODB_BUDSHOME",
             dotenv::var("MONGODB_BUDSHOME").expect("Expected MONGODB_BUDSHOME to be set in env!"),
+        );
+        map.insert(
+            "SITE_KEY",
+            dotenv::var("SITE_KEY").expect("Expected SITE_KEY to be set in env!"),
+        );
+        map.insert(
+            "CLAIM_EXP",
+            dotenv::var("CLAIM_EXP").expect("Expected CLAIM_EXP to be set in env!"),
         );
 
         map

@@ -1,7 +1,7 @@
 use serde::{Serialize, Deserialize};
 use bson::oid::ObjectId;
 
-use crate::constant::GqlResult;
+use crate::utils::constant::GqlResult;
 use crate::dbs::mongo::DataSource;
 use crate::projects::models::Project;
 use crate::projects::services::all_projects_by_user;
@@ -41,8 +41,23 @@ pub struct NewUser {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Claims {
-    email: String,
-    username: String,
-    exp: usize,
+pub struct SignInfo {
+    pub email: String,
+    pub username: String,
+    pub token: String,
+}
+
+#[async_graphql::Object]
+impl SignInfo {
+    pub async fn email(&self) -> &str {
+        self.email.as_str()
+    }
+
+    pub async fn username(&self) -> &str {
+        self.username.as_str()
+    }
+
+    pub async fn token(&self) -> &str {
+        self.token.as_str()
+    }
 }

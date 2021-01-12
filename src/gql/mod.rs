@@ -9,7 +9,7 @@ use tide::{Request, Response, Body, StatusCode};
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig, receive_json};
 use async_graphql::{Schema, EmptySubscription};
 
-use crate::constant::ENV;
+use crate::utils::constant::CFG;
 use crate::dbs::mongo;
 
 use crate::gql::queries::QueryRoot;
@@ -41,7 +41,7 @@ pub async fn graphql(req: Request<State>) -> tide::Result<impl Into<Response>> {
 pub async fn graphiql(_: Request<State>) -> tide::Result<impl Into<Response>> {
     let mut resp = Response::new(StatusCode::Ok);
     resp.set_body(playground_source(GraphQLPlaygroundConfig::new(
-        ENV.get("GRAPHQL_PATH").unwrap(),
+        CFG.get("GRAPHQL_PATH").unwrap(),
     )));
     resp.set_content_type(mime::HTML);
 

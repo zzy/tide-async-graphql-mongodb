@@ -1,11 +1,13 @@
 use futures::stream::StreamExt;
 use mongodb::Database;
 use async_graphql::{Error, ErrorExtensions};
-use jsonwebtoken::errors::ErrorKind;
-use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
+use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
 
-use crate::constant::GqlResult;
-use crate::users::models::{User, NewUser};
+use crate::utils::{
+    constant::{CFG, GqlResult},
+    common::{Claims, token_data},
+};
+use crate::users::models::{User, NewUser, SignInfo};
 
 // get user info by email
 pub async fn get_user_by_email(db: Database, email: &str) -> GqlResult<User> {
@@ -23,7 +25,7 @@ pub async fn get_user_by_email(db: Database, email: &str) -> GqlResult<User> {
             }))
         }
     } else {
-        Err(Error::new("1-email").extend_with(|_, e| e.set("details", "Document not found")))
+        Err(Error::new("1-email").extend_with(|_, e| e.set("details", "Email not found")))
     }
 }
 
@@ -43,7 +45,7 @@ pub async fn get_user_by_username(db: Database, username: &str) -> GqlResult<Use
             }))
         }
     } else {
-        Err(Error::new("3-username").extend_with(|_, e| e.set("details", "Document not found")))
+        Err(Error::new("3-username").extend_with(|_, e| e.set("details", "Username not found")))
     }
 }
 
@@ -76,7 +78,7 @@ pub async fn user_register(db: Database, mut new_user: NewUser) -> GqlResult<Use
     }
 }
 
-pub async fn user_sign_in(db: Database, user_account: NewUser) -> GqlResult<User> {
+pub async fn user_sign_in(db: Database, user_account: NewUser) -> GqlResult<SignInfo> {
     user_account.email.to_lowercase();
     user_account.username.to_lowercase();
 
@@ -91,36 +93,63 @@ pub async fn user_sign_in(db: Database, user_account: NewUser) -> GqlResult<User
     }
 
     if super::cred::cred_verify(&user.username, &user_account.password, &user.cred).await {
-        Ok(user)
+        let mut header = Header::default();
+        header.kid = Some("signing_key".to_owned());
+        header.alg = Algorithm::HS512;
+
+        let site_key = CFG.get("SITE_KEY").unwrap().as_bytes();
+        let claim_exp = CFG.get("CLAIM_EXP").unwrap().parse::<usize>().unwrap();
+        let claims = Claims {
+            email: user.email.to_owned(),
+            username: user.username.to_owned(),
+            exp: claim_exp,
+        };
+
+        let token = match encode(&header, &claims, &EncodingKey::from_secret(site_key)) {
+            Ok(t) => t,
+            Err(error) => Err(Error::new("7-user-sign-in")
+                .extend_with(|_, e| e.set("details", format!("Error to encode token: {}", error))))
+            .unwrap(),
+        };
+
+        let sign_info = SignInfo { email: user.email, username: user.username, token: token };
+        Ok(sign_info)
     } else {
         Err(Error::new("user_sign_in").extend_with(|_, e| e.set("details", "Invalid credential")))
     }
 }
 
-pub async fn all_users(db: Database) -> GqlResult<Vec<User>> {
-    let coll = db.collection("users");
+pub async fn all_users(db: Database, token: &str) -> GqlResult<Vec<User>> {
+    let token_data = token_data(token).await;
+    if token_data.is_ok() {
+        // if token_data::c
+        let coll = db.collection("users");
 
-    let mut users: Vec<User> = vec![];
+        let mut users: Vec<User> = vec![];
 
-    // Query all documents in the collection.
-    let mut cursor = coll.find(None, None).await.unwrap();
+        // Query all documents in the collection.
+        let mut cursor = coll.find(None, None).await.unwrap();
 
-    // Iterate over the results of the cursor.
-    while let Some(result) = cursor.next().await {
-        match result {
-            Ok(document) => {
-                let user = bson::from_bson(bson::Bson::Document(document)).unwrap();
-                users.push(user);
+        // Iterate over the results of the cursor.
+        while let Some(result) = cursor.next().await {
+            match result {
+                Ok(document) => {
+                    let user = bson::from_bson(bson::Bson::Document(document)).unwrap();
+                    users.push(user);
+                }
+                Err(error) => Err(Error::new("6-all-users")
+                    .extend_with(|_, e| e.set("details", format!("Error to find doc: {}", error))))
+                .unwrap(),
             }
-            Err(error) => Err(Error::new("6-all-users")
-                .extend_with(|_, e| e.set("details", format!("Error to find doc: {}", error))))
-            .unwrap(),
         }
-    }
 
-    if users.len() > 0 {
-        Ok(users)
+        if users.len() > 0 {
+            Ok(users)
+        } else {
+            Err(Error::new("6-all-users").extend_with(|_, e| e.set("details", "No records")))
+        }
     } else {
-        Err(Error::new("6-all-users").extend_with(|_, e| e.set("details", "No records")))
+        Err(Error::new("6-all-users")
+            .extend_with(|_, e| e.set("details", format!("{}", token_data.err().unwrap()))))
     }
 }

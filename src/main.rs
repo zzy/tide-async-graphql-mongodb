@@ -1,11 +1,11 @@
-mod constant;
+mod utils;
 mod dbs;
 mod gql;
 
 mod users;
 mod projects;
 
-use crate::constant::ENV;
+use crate::utils::constant::CFG;
 
 //  Tide application scope state.
 #[derive(Clone)]
@@ -26,15 +26,15 @@ async fn main() -> Result<(), std::io::Error> {
     let mut app = tide::with_state(State(gql::build_schema().await));
 
     //environment variables defined in .env file
-    app.at("/").get(tide::Redirect::new(ENV.get("GRAPHIQL_PATH").unwrap()));
+    app.at("/").get(tide::Redirect::new(CFG.get("GRAPHIQL_PATH").unwrap()));
     // app.at(ENV.get("GRAPHQL_PATH").unwrap()).post(async_graphql_tide::endpoint(schema));
-    app.at(ENV.get("GRAPHQL_PATH").unwrap()).post(gql::graphql);
-    app.at(ENV.get("GRAPHIQL_PATH").unwrap()).get(gql::graphiql);
+    app.at(CFG.get("GRAPHQL_PATH").unwrap()).post(gql::graphql);
+    app.at(CFG.get("GRAPHIQL_PATH").unwrap()).get(gql::graphiql);
 
     app.listen(format!(
         "{}:{}",
-        ENV.get("GRAPHQL_ADDRESS").unwrap(),
-        ENV.get("GRAPHQL_PORT").unwrap()
+        CFG.get("GRAPHQL_ADDRESS").unwrap(),
+        CFG.get("GRAPHQL_PORT").unwrap()
     ))
     .await?;
 

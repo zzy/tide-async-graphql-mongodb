@@ -1,7 +1,7 @@
 use async_graphql::Context;
 
 use crate::dbs::mongo::DataSource;
-use crate::constant::GqlResult;
+use crate::utils::constant::GqlResult;
 use crate::users::{
     self,
     models::{User, NewUser},

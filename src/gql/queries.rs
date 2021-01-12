@@ -2,10 +2,10 @@ use async_graphql::Context;
 use bson::oid::ObjectId;
 
 use crate::dbs::mongo::DataSource;
-use crate::constant::GqlResult;
+use crate::utils::constant::GqlResult;
 use crate::users::{
     self,
-    models::{User, NewUser},
+    models::{User, NewUser, SignInfo},
 };
 use crate::projects::{self, models::Project};
 
@@ -25,15 +25,15 @@ impl QueryRoot {
         users::services::get_user_by_username(db, &username).await
     }
 
-    async fn user_sign_in(&self, ctx: &Context<'_>, user_account: NewUser) -> GqlResult<User> {
+    async fn user_sign_in(&self, ctx: &Context<'_>, user_account: NewUser) -> GqlResult<SignInfo> {
         let db = ctx.data_unchecked::<DataSource>().db_budshome.clone();
         users::services::user_sign_in(db, user_account).await
     }
 
     // Get all Users,
-    async fn all_users(&self, ctx: &Context<'_>) -> GqlResult<Vec<User>> {
+    async fn all_users(&self, ctx: &Context<'_>, token: String) -> GqlResult<Vec<User>> {
         let db = ctx.data_unchecked::<DataSource>().db_budshome.clone();
-        users::services::all_users(db).await
+        users::services::all_users(db, &token).await
     }
 
     // Get all Projects

@@ -5,8 +5,8 @@ static PBKDF2_ALG: pbkdf2::Algorithm = pbkdf2::PBKDF2_HMAC_SHA256;
 
 #[async_std::main]
 async fn main() {
-    let username = "budshome";
-    let password = "%!@#$7654";
+    let username = "芽之家";
+    let password = "budshome.com";
 
     let cred_en = cred_encode(username, password).await;
     let cred_de = base64::decode(&cred_en.as_bytes()).unwrap();
