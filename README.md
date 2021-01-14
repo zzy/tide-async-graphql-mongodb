@@ -4,7 +4,13 @@ Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-
 
 ## Features
 
-- [x] User register
+- [x]| 表头二 | 表头三
+------- | ------ | ------
+- [x]| 一行单元格二 | 一行单元格三
+二行内容一 | 二行内容二 | 二行内容三
+三行描述部分一 | 三行描述部分二 | 三行描述部分三
+
+User register
 - [x] Salt and hash a password with PBKDF2
 - [x] Sign in
 - [x] JSON web token authentication
