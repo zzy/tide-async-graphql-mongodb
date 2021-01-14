@@ -4,11 +4,11 @@ Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-
 
 ## Features
 
-[ ]|ddd |ddd
-------- | ------ | ------
-[x]| 一行单元格二 | 一行单元格三
-[x]| 二行内容二 | 二行内容三
-[x]| 三行描述部分二 | 三行描述部分三
+| ddd | ddd |
+| ------  | ------ |
+| [x] | 一行单元格三 |
+| [x] | 二行内容三 |
+| [x] | 三行描述部分三 |
 
 User register
 - [x] Salt and hash a password with PBKDF2
