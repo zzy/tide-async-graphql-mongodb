@@ -18,11 +18,14 @@ Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-
 ## Stacks
 
 - [Rust](https://www.rust-lang.org) - [中文资料集萃](https://budshome.com)
-- [Tide](https://github.com/http-rs/tide) - [中文文档](https://tide.budshome.com)
+- [Tide](https://crates.io/crates/tide) - [中文文档](https://tide.budshome.com)
 - [async-graphql](https://crates.io/crates/async-graphql) - [中文文档](https://async-graphql.budshome.com)
 - [mongodb & mongo-rust-driver](https://crates.io/crates/mongodb)
+- [Surf](https://crates.io/crates/surf)
+- [graphql_client](https://crates.io/crates/graphql_client)
 - [handlebars-rust](https://crates.io/crates/handlebars)
 - [jsonwebtoken](https://crates.io/crates/jsonwebtoken)
+- [cookie-rs](https://crates.io/crates/cookie)
 
 ## How to run?
 
