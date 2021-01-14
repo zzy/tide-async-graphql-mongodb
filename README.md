@@ -14,7 +14,7 @@ Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-
 - [x] Project: query & mutation
 - [x] Use Surf & graphql-client to get & parse graphql data
 - [x] Render graphql data to template engine handlebars
-
+------
 - [x] 用户注册
 - [x] 使用 PBKDF2 对密码进行加密（salt）和散列（hash）运算
 - [x] 签入
