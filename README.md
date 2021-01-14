@@ -1,17 +1,30 @@
 # tide-async-graphql-mongodb
 
-Clean boilerplate for graphql services using tide, async-graphql, handlebars-rust, and mongodb.
+Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-client, handlebars-rust, and mongodb. 
 
 ## Features
 
-- [x] User register - 用户注册
-- [x] Salt and hash a password with PBKDF2 - 使用 PBKDF2 对密码进行加密（salt）和散列（hash）运算
-- [x] Sign in - 签入
-- [x] JSON web token authentication - JWT 鉴权整合
-- [x] Change password - 修改密码
-- [x] Profile Update - 资料更新
-- [x] User: query & mutation - 用户查询和变更
-- [x] Project: query & mutation - 项目查询和变更
+- [x] User register
+- [x] Salt and hash a password with PBKDF2
+- [x] Sign in
+- [x] JSON web token authentication
+- [x] Change password
+- [x] Profile Update
+- [x] User: query & mutation
+- [x] Project: query & mutation
+- [x] Use Surf & graphql-client to get & parse graphql data
+- [x] Render graphql data to template engine handlebars
+------
+- [x] 用户注册
+- [x] 使用 PBKDF2 对密码进行加密（salt）和散列（hash）运算
+- [x] 签入
+- [x] JWT 鉴权整合
+- [x] 修改密码
+- [x] 资料更新
+- [x] 用户查询和变更
+- [x] 项目查询和变更
+- [x] 使用 surf 和 graphql-client 获取和解析 graphql 数据
+- [x] 渲染 graphql 数据到模板引擎 handlebars
 
 ## Stacks
 
