@@ -5,7 +5,7 @@ Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-
 ## Features
 
 - [x] User register
-- [x] Salt and hash a password with PBKDF2
+- [x] Salt and hash a password with PBKDF2 - 使用 PBKDF2 对密码进行加密（salt）和散列（hash）运算
 - [x] Sign in
 - [x] JSON web token authentication
 - [x] Change password
@@ -14,17 +14,6 @@ Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-
 - [x] Project: query & mutation
 - [x] Use Surf & graphql-client to get & parse graphql data
 - [x] Render graphql data to template engine handlebars
-------
-- [x] 用户注册
-- [x] 使用 PBKDF2 对密码进行加密（salt）和散列（hash）运算
-- [x] 签入
-- [x] JWT 鉴权整合
-- [x] 修改密码
-- [x] 资料更新
-- [x] 用户查询和变更
-- [x] 项目查询和变更
-- [x] 使用 surf 和 graphql-client 获取和解析 graphql 数据
-- [x] 渲染 graphql 数据到模板引擎 handlebars
 
 ## Stacks
 
