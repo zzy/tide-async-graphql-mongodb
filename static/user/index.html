@@ -1,0 +1,21 @@
+<html>
+
+  <head>
+    <title>all users</title>
+  </head>
+
+  <body>
+    <h1>all users</h1>
+    <ul>
+      {{#each teams as |t|}}
+        {{ ~log @index }}
+        <li class="{{ranking_label @index ../teams}}">
+          <b>{{t.name}}</b>: {{format t.pts ~}}
+        </li>
+      {{/each}}
+    </ul>
+
+    <p>Rendered by Handlebars from {{engine}} data.</p>
+  </body>
+
+</html>
