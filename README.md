@@ -37,11 +37,9 @@ cd tide-async-graphql-mongodb
 Put the environment variables into a `.env` file:
 
 ```
-WEB_ADDRESS=0.0.0.0
-WEB_PORT=8080
+ADDRESS=0.0.0.0
+PORT=8080
 
-GRAPHQL_ADDRESS=0.0.0.0
-GRAPHQL_PORT=8080
 GRAPHQL_PATH=graphql
 GRAPHIQL_PATH=graphiql
 
@@ -58,6 +56,8 @@ Build & Run:
 cargo build
 cargo run
 ```
+
+Then connect to http://localhost:8080 with browser.
 
 GraphiQL: connect to http://localhost:8080/graphiql with browser.
 

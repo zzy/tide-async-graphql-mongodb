@@ -12,22 +12,14 @@ lazy_static! {
         let mut map = HashMap::new();
 
         map.insert(
-            "WEB_ADDRESS",
-            dotenv::var("WEB_ADDRESS").expect("Expected WEB_ADDRESS to be set in env!"),
+            "ADDRESS",
+            dotenv::var("ADDRESS").expect("Expected ADDRESS to be set in env!"),
         );
         map.insert(
-            "WEB_PORT",
-            dotenv::var("WEB_PORT").expect("Expected WEB_PORT to be set in env!"),
+            "PORT",
+            dotenv::var("PORT").expect("Expected PORT to be set in env!"),
         );
 
-        map.insert(
-            "GRAPHQL_ADDRESS",
-            dotenv::var("GRAPHQL_ADDRESS").expect("Expected GRAPHQL_ADDRESS to be set in env!"),
-        );
-        map.insert(
-            "GRAPHQL_PORT",
-            dotenv::var("GRAPHQL_PORT").expect("Expected GRAPHQL_PORT to be set in env!"),
-        );
         map.insert(
             "GRAPHQL_PATH",
             dotenv::var("GRAPHQL_PATH").expect("Expected GRAPHQL_PATH to be set in env!"),
@@ -45,6 +37,7 @@ lazy_static! {
             "MONGODB_BUDSHOME",
             dotenv::var("MONGODB_BUDSHOME").expect("Expected MONGODB_BUDSHOME to be set in env!"),
         );
+
         map.insert(
             "SITE_KEY",
             dotenv::var("SITE_KEY").expect("Expected SITE_KEY to be set in env!"),
