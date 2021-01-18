@@ -3,7 +3,7 @@ use mongodb::Database;
 use async_graphql::{Error, ErrorExtensions};
 use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
 
-use crate::utils::{
+use crate::util::{
     constant::{CFG, GqlResult},
     common::{Claims, token_data},
 };

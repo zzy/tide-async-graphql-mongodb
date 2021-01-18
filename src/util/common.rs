@@ -5,7 +5,7 @@ use tide::{
     {http::mime::HTML},
 };
 
-use crate::utils::constant::CFG;
+use crate::util::constant::CFG;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {

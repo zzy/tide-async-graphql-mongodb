@@ -2,7 +2,7 @@ use async_graphql::Context;
 use bson::oid::ObjectId;
 
 use crate::dbs::mongo::DataSource;
-use crate::utils::constant::GqlResult;
+use crate::util::constant::GqlResult;
 use crate::users::{
     self,
     models::{User, NewUser, SignInfo},

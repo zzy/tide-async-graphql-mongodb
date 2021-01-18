@@ -2969,7 +2969,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "tide-async-graphql-mongodb"
+name = "tide-handlebars-graphql-mongodb"
 version = "0.1.0"
 dependencies = [
  "async-graphql",

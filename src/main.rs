@@ -1,14 +1,13 @@
 use tide::Request;
-use utils::common::Tpl;
 
-mod utils;
+mod util;
 mod dbs;
 mod gql;
 
 mod users;
 mod projects;
 
-use crate::utils::constant::CFG;
+use crate::util::{constant::CFG, common::Tpl};
 
 //  Tide application scope state.
 #[derive(Clone)]
@@ -43,14 +42,10 @@ async fn main() -> Result<(), std::io::Error> {
 }
 
 pub async fn index(_req: Request<State>) -> tide::Result {
-    let mut index: Tpl = Tpl::new("index").await;
-
-    // register some custom helpers
-    index.reg.register_helper("format", Box::new(format_helper));
-    index.reg.register_helper("ranking_label", Box::new(rank_helper));
+    let index: Tpl = Tpl::new("index").await;
 
     // make data and render it
-    let data = json!({"app_name": "tide-async-graphql-mongodb", "author": "zzy"});
+    let data = json!({"app_name": "tide-handlebars-graphql-mongodb", "author": "zzy"});
 
     index.render(&data).await
 }

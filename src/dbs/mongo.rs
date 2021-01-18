@@ -1,4 +1,4 @@
-use crate::utils::constant::CFG;
+use crate::util::constant::CFG;
 
 use mongodb::{Client, options::ClientOptions, Database};
 

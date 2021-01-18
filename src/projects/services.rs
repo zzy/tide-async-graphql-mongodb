@@ -3,7 +3,7 @@ use mongodb::Database;
 use bson::oid::ObjectId;
 use async_graphql::{Error, ErrorExtensions};
 
-use crate::utils::constant::GqlResult;
+use crate::util::constant::GqlResult;
 use crate::projects::models::{Project, NewProject};
 
 pub async fn add_project(db: Database, new_project: NewProject) -> Project {

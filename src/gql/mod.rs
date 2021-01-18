@@ -9,7 +9,7 @@ use tide::{Request, Response, Body, StatusCode};
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig, receive_json};
 use async_graphql::{Schema, EmptySubscription};
 
-use crate::utils::constant::CFG;
+use crate::util::constant::CFG;
 use crate::dbs::mongo;
 
 use crate::gql::queries::QueryRoot;
