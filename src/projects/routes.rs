@@ -23,15 +23,12 @@ pub async fn project_index(_req: Request<State>) -> tide::Result {
     // make data and render it
     let build_query = AllProjects::build_query(all_projects::Variables {});
     let query = serde_json::json!(build_query);
-    println!("{:?}\n", &query);
 
     let uri = "http://127.0.0.1:8080/v1";
     let resp_body: Response<all_projects::ResponseData> =
         surf::post(uri).body(query).recv_json().await.unwrap();
-    println!("{:?}\n", &resp_body);
 
     let resp_data: all_projects::ResponseData = resp_body.data.expect("missing response data");
-    println!("{:?}\n", resp_data);
 
     let mut projects_data: Vec<Project> = vec![];
     for project in resp_data.all_projects {
