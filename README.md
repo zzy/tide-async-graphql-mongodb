@@ -1,6 +1,6 @@
-# tide-async-graphql-mongodb
+# tide-handlebars-graphql-mongodb
 
-Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-client, handlebars-rust, and mongodb. 
+Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-client, handlebars-rust, jsonwebtoken, and mongodb. 
 
 ## Features
 
@@ -30,8 +30,8 @@ Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-
 ## How to run?
 
 ``` Bash
-git clone https://github.com/zzy/tide-async-graphql-mongodb.git
-cd tide-async-graphql-mongodb
+git clone https://github.com/zzy/tide-handlebars-graphql-mongodb.git
+cd tide-handlebars-graphql-mongodb
 ```
 
 Put the environment variables into a `.env` file:
