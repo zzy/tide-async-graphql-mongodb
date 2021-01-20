@@ -43,7 +43,7 @@ PORT=8080
 GRAPHQL_PATH=graphql
 GRAPHIQL_PATH=graphiql
 
-MONGODB_URI=mongodb://mongo:mongo@localhost:27017
+MONGODB_URI=mongodb://mongo:mongo@127.0.0.1:27017
 MONGODB_BUDSHOME=budshome
 
 SITE_KEY=0F4EHz+1/hqVvZjuB8EcooQs1K6QKBvLUxqTHt4tpxE=
@@ -57,9 +57,9 @@ cargo build
 cargo run
 ```
 
-Then connect to http://localhost:8080 with browser.
+Then connect to http://127.0.0.1:8080 with browser.
 
-GraphiQL: connect to http://localhost:8080/graphiql with browser.
+GraphiQL: connect to http://127.0.0.1:8080/graphiql with browser.
 
 ## Queries
 
