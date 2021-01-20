@@ -25,6 +25,7 @@ Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-
 - [graphql_client](https://crates.io/crates/graphql_client)
 - [handlebars-rust](https://crates.io/crates/handlebars)
 - [jsonwebtoken](https://crates.io/crates/jsonwebtoken)
+- [cookie-rs](https://crates.io/crates/cookie)
 
 ## How to run?
 
