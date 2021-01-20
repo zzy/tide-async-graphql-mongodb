@@ -37,7 +37,7 @@ cd tide-handlebars-graphql-mongodb
 Put the environment variables into a `.env` file:
 
 ```
-ADDRESS=0.0.0.0
+ADDRESS=127.0.0.1
 PORT=8080
 
 GRAPHQL_PATH=graphql
