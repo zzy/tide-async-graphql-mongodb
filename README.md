@@ -4,7 +4,7 @@ Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-
 
 ## Features
 
-- Graphql Services:
+- Graphql Services
   - [x] User register
   - [x] Salt and hash a password with PBKDF2 - 使用 PBKDF2 对密码进行加密（salt）和散列（hash）运算
   - [x] Sign in
