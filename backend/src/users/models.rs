@@ -28,7 +28,10 @@ impl User {
         self.username.as_str()
     }
 
-    pub async fn projects(&self, ctx: &async_graphql::Context<'_>) -> GqlResult<Vec<Project>> {
+    pub async fn projects(
+        &self,
+        ctx: &async_graphql::Context<'_>,
+    ) -> GqlResult<Vec<Project>> {
         let db = ctx.data_unchecked::<DataSource>().db_budshome.clone();
         all_projects_by_user(db, self._id.clone()).await
     }

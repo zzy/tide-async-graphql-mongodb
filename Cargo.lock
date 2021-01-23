@@ -1105,21 +1105,12 @@ dependencies = [
 name = "frontend-handlebars"
 version = "0.1.0"
 dependencies = [
- "async-graphql",
- "async-graphql-tide",
  "async-std",
- "base64 0.13.0",
- "bson",
- "chrono",
  "dotenv",
- "futures",
  "graphql_client",
  "handlebars",
- "jsonwebtoken",
  "lazy_static",
- "mongodb",
  "regex",
- "ring",
  "serde",
  "serde_json",
  "surf",

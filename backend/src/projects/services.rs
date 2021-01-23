@@ -27,7 +27,9 @@ pub async fn add_project(db: Database, new_project: NewProject) -> Project {
                 .await
                 .expect("Failed to insert into a MongoDB collection!");
         } else {
-            println!("Error converting the BSON object into a MongoDB document");
+            println!(
+                "Error converting the BSON object into a MongoDB document"
+            );
         };
     }
 
@@ -40,7 +42,8 @@ pub async fn add_project(db: Database, new_project: NewProject) -> Project {
         .expect("Document not found")
         .unwrap();
 
-    let project: Project = bson::from_bson(bson::Bson::Document(project_document)).unwrap();
+    let project: Project =
+        bson::from_bson(bson::Bson::Document(project_document)).unwrap();
     project
 }
 
@@ -56,7 +59,8 @@ pub async fn all_projects(db: Database) -> GqlResult<Vec<Project>> {
     while let Some(result) = cursor.next().await {
         match result {
             Ok(document) => {
-                let project = bson::from_bson(bson::Bson::Document(document)).unwrap();
+                let project =
+                    bson::from_bson(bson::Bson::Document(document)).unwrap();
                 projects.push(project);
             }
             Err(error) => {
@@ -68,23 +72,29 @@ pub async fn all_projects(db: Database) -> GqlResult<Vec<Project>> {
     if projects.len() > 0 {
         Ok(projects)
     } else {
-        Err(Error::new("7-all-projects").extend_with(|_, e| e.set("details", "No records")))
+        Err(Error::new("7-all-projects")
+            .extend_with(|_, e| e.set("details", "No records")))
     }
 }
 
-pub async fn all_projects_by_user(db: Database, user_id: ObjectId) -> GqlResult<Vec<Project>> {
+pub async fn all_projects_by_user(
+    db: Database,
+    user_id: ObjectId,
+) -> GqlResult<Vec<Project>> {
     let coll = db.collection("projects");
 
     let mut projects: Vec<Project> = vec![];
 
     // Query all documents in the collection.
-    let mut cursor = coll.find(bson::doc! {"user_id": user_id}, None).await.unwrap();
+    let mut cursor =
+        coll.find(bson::doc! {"user_id": user_id}, None).await.unwrap();
 
     // Iterate over the results of the cursor.
     while let Some(result) = cursor.next().await {
         match result {
             Ok(document) => {
-                let project = bson::from_bson(bson::Bson::Document(document)).unwrap();
+                let project =
+                    bson::from_bson(bson::Bson::Document(document)).unwrap();
                 projects.push(project);
             }
             Err(error) => {

@@ -1,9 +1,10 @@
 use graphql_client::{GraphQLQuery, Response};
 use tide::Request;
-use bson::oid::ObjectId;
 
-use crate::State;
+// use crate::State;
 use crate::util::common::{gql_uri, Tpl};
+
+type ObjectId = String;
 
 #[derive(GraphQLQuery)]
 #[graphql(
@@ -13,7 +14,7 @@ use crate::util::common::{gql_uri, Tpl};
 )]
 struct AllProjects;
 
-pub async fn project_index(_req: Request<State>) -> tide::Result {
+pub async fn project_index(_req: Request<()>) -> tide::Result {
     let project_index: Tpl = Tpl::new("project/index").await;
 
     // make data and render it

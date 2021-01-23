@@ -23,7 +23,9 @@ async fn build_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription> {
     // The root object for the query and Mutatio, and use EmptySubscription.
     // Add global mongodb datasource  in the schema object.
     // let mut schema = Schema::new(QueryRoot, MutationRoot, EmptySubscription)
-    Schema::build(QueryRoot, MutationRoot, EmptySubscription).data(mongo_ds).finish()
+    Schema::build(QueryRoot, MutationRoot, EmptySubscription)
+        .data(mongo_ds)
+        .finish()
 }
 
 pub async fn graphql(req: Request<()>) -> tide::Result {

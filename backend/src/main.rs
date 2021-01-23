@@ -24,7 +24,12 @@ async fn main() -> Result<(), std::io::Error> {
     app.at(CFG.get("GRAPHQL_PATH").unwrap()).post(gql::graphql);
     app.at(CFG.get("GRAPHIQL_PATH").unwrap()).get(gql::graphiql);
 
-    app.listen(format!("{}:{}", CFG.get("ADDRESS").unwrap(), CFG.get("PORT").unwrap())).await?;
+    app.listen(format!(
+        "{}:{}",
+        CFG.get("ADDRESS").unwrap(),
+        CFG.get("PORT").unwrap()
+    ))
+    .await?;
 
     Ok(())
 }

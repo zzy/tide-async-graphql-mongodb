@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
-use jsonwebtoken::{decode, TokenData, Algorithm, DecodingKey, Validation, errors::Error};
+use jsonwebtoken::{
+    decode, TokenData, Algorithm, DecodingKey, Validation, errors::Error,
+};
 
 use crate::util::constant::CFG;
 

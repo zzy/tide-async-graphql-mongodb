@@ -1,5 +1,4 @@
-use serde::{Serialize, Deserialize};
-use jsonwebtoken::{decode, TokenData, Algorithm, DecodingKey, Validation, errors::Error};
+use serde::Serialize;
 use tide::{
     Response, StatusCode, Body,
     {http::mime::HTML},
@@ -9,29 +8,10 @@ use crate::util::constant::CFG;
 
 pub async fn gql_uri() -> String {
     let address = CFG.get("ADDRESS").unwrap();
-    let port = CFG.get("PORT").unwrap();
+    let gql_port = CFG.get("GRAPHQL_PORT").unwrap();
     let gql_path = CFG.get("GRAPHQL_PATH").unwrap();
 
-    format!("http://{}:{}/{}", address, port, gql_path)
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Claims {
-    pub email: String,
-    pub username: String,
-    pub exp: usize,
-}
-
-pub async fn token_data(token: &str) -> Result<TokenData<Claims>, Error> {
-    let site_key = CFG.get("SITE_KEY").unwrap().as_bytes();
-
-    let data = decode::<Claims>(
-        token,
-        &DecodingKey::from_secret(site_key),
-        &Validation::new(Algorithm::HS512),
-    );
-
-    data
+    format!("http://{}:{}/{}", address, gql_port, gql_path)
 }
 
 pub struct Tpl {
@@ -58,7 +38,9 @@ impl Tpl {
     {
         let mut resp = Response::new(StatusCode::Ok);
         resp.set_content_type(HTML);
-        resp.set_body(Body::from_string(self.reg.render(&self.name, data).unwrap()));
+        resp.set_body(Body::from_string(
+            self.reg.render(&self.name, data).unwrap(),
+        ));
 
         Ok(resp.into())
     }
