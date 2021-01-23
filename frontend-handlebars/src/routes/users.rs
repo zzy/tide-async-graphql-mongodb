@@ -2,7 +2,10 @@ use graphql_client::{GraphQLQuery, Response};
 use tide::Request;
 
 // use crate::State;
-use crate::util::common::{gql_uri, Tpl};
+use crate::{
+    State,
+    util::common::{gql_uri, Tpl},
+};
 
 type ObjectId = String;
 
@@ -14,8 +17,8 @@ type ObjectId = String;
 )]
 struct AllUsers;
 
-pub async fn user_index(_req: Request<()>) -> tide::Result {
-    let user_index: Tpl = Tpl::new("user/index").await;
+pub async fn user_index(_req: Request<State>) -> tide::Result {
+    let user_index: Tpl = Tpl::new("users/index").await;
 
     // make data and render it
     let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImlvazJAYnVkc2hvbWUuY29tIiwidXNlcm5hbWUiOiLmiJHmmK9vazIiLCJleHAiOjEwMDAwMDAwMDAwfQ.Gk98TjaFPpyW2Vdunn-pVqSPizP_zzTr89psBTE6zzfLQStUnBEXA2k0yVrS0CHBt9bHLLcFgmo4zYiioRBzBg";

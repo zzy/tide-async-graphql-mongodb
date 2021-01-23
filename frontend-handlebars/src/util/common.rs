@@ -1,6 +1,6 @@
 use serde::Serialize;
 use tide::{
-    Response, StatusCode, Body,
+    Response, StatusCode,
     {http::mime::HTML},
 };
 
@@ -22,7 +22,7 @@ pub struct Tpl {
 impl Tpl {
     pub async fn new(rel_path: &str) -> Tpl {
         let tpl_name = &rel_path.replace("/", "_");
-        let abs_path = format!("./static/{}.html", rel_path);
+        let abs_path = format!("./templates/{}.html", rel_path);
 
         // create the handlebars registry
         let mut hbs_reg = handlebars::Handlebars::new();
@@ -38,9 +38,7 @@ impl Tpl {
     {
         let mut resp = Response::new(StatusCode::Ok);
         resp.set_content_type(HTML);
-        resp.set_body(Body::from_string(
-            self.reg.render(&self.name, data).unwrap(),
-        ));
+        resp.set_body(self.reg.render(&self.name, data).unwrap());
 
         Ok(resp.into())
     }
