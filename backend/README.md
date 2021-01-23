@@ -1,69 +1,10 @@
-# tide-graphql-mongodb
-
-Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-client, handlebars-rust, jsonwebtoken, and mongodb. 
-
-## Features
-
-- Graphql Services:
-  - [x] User register
-  - [x] Salt and hash a password with PBKDF2 - 使用 PBKDF2 对密码进行加密（salt）和散列（hash）运算
-  - [x] Sign in
-  - [x] JSON web token authentication - JWT 鉴权整合
-  - [x] Change password
-  - [x] Profile Update
-  - [x] User: query & mutation
-  - [x] Project: query & mutation
-- Web Application
-  - [x] Client request, bring & parse GraphQL data
-  - [x] Render data to template engine
-
-## Stacks
-
-- [Rust](https://www.rust-lang.org) - [中文资料集萃](https://budshome.com)
-- [Tide](https://crates.io/crates/tide) - [中文文档](https://tide.budshome.com)
-- [async-graphql](https://crates.io/crates/async-graphql) - [中文文档](https://async-graphql.budshome.com)
-- [mongodb & mongo-rust-driver](https://crates.io/crates/mongodb)
-- [Surf](https://crates.io/crates/surf)
-- [graphql_client](https://crates.io/crates/graphql_client)
-- [handlebars-rust](https://crates.io/crates/handlebars)
-- [jsonwebtoken](https://crates.io/crates/jsonwebtoken)
-- [cookie-rs](https://crates.io/crates/cookie)
-
-## How to run?
+# Graphql Server
 
 ``` Bash
 git clone https://github.com/zzy/tide-graphql-mongodb.git
 cd tide-handlebars-graphql-mongodb
 cargo build
-```
 
-### Frontend - Tide Server
-
-``` Bash
-cd frontend-handlebars
-```
-
-Rename file `.env.example` to `.env`, or put the environment variables into a `.env` file:
-
-```
-ADDRESS=127.0.0.1
-PORT=3000
-
-GRAPHQL_PORT=8080
-GRAPHQL_PATH=graphql
-GRAPHIQL_PATH=graphiql
-```
-
-Build & Run:
-
-``` Bash
-cargo run
-```
-Then connect to http://127.0.0.1:3000 with browser.
-
-### Backend - Graphql Server
-
-``` Bash
 cd backend
 ```
 
