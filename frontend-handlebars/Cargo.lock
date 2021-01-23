@@ -455,30 +455,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cdb031dd78e28731d87d56cc8ffef4a8f36ca26c38fe2de700543e627f8a464a"
 
 [[package]]
-name = "backend"
-version = "0.1.0"
-dependencies = [
- "async-graphql",
- "async-graphql-tide",
- "async-std",
- "base64 0.13.0",
- "bson",
- "dotenv",
- "futures",
- "jsonwebtoken",
- "lazy_static",
- "mongodb",
- "regex",
- "ring",
- "serde",
- "tide",
-]
-
-[[package]]
 name = "backtrace"
-version = "0.3.56"
+version = "0.3.55"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9d117600f438b1707d4e4ae15d3595657288f8235a0eb593e80ecc98ab34e1bc"
+checksum = "ef5140344c85b01f9bbb4d4b7288a8aa4b3287ccef913a14bcc78a1063623598"
 dependencies = [
  "addr2line",
  "cfg-if 1.0.0",
@@ -1102,32 +1082,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "frontend-handlebars"
-version = "0.1.0"
-dependencies = [
- "async-graphql",
- "async-graphql-tide",
- "async-std",
- "base64 0.13.0",
- "bson",
- "chrono",
- "dotenv",
- "futures",
- "graphql_client",
- "handlebars",
- "jsonwebtoken",
- "lazy_static",
- "mongodb",
- "regex",
- "ring",
- "serde",
- "serde_json",
- "surf",
- "tide",
- "tide-handlebars",
-]
-
-[[package]]
 name = "fuchsia-zircon"
 version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1526,9 +1480,9 @@ dependencies = [
 
 [[package]]
 name = "http-types"
-version = "2.10.0"
+version = "2.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "32613ebb139d1d430ef5783676f84abfa06fc5f2b4b5a25220cdeeff7e16ef5c"
+checksum = "f2ab8d0085fb82859c9adf050bd53992297ecdd03a665a230dfa50c8c964bf3d"
 dependencies = [
  "anyhow",
  "async-channel",
@@ -1537,7 +1491,7 @@ dependencies = [
  "cookie",
  "futures-lite",
  "infer",
- "pin-project-lite 0.2.4",
+ "pin-project-lite 0.1.11",
  "rand 0.7.3",
  "serde",
  "serde_json",
@@ -1996,9 +1950,9 @@ dependencies = [
 
 [[package]]
 name = "object"
-version = "0.23.0"
+version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a9a7ab5d64814df0fe4a4b5ead45ed6c5f181ee3ff04ba344313a6c80446c5d4"
+checksum = "8d3b63360ec3cb337817c2dbd47ab4a0f170d285d8e5a2064600f3def1402397"
 
 [[package]]
 name = "once_cell"
@@ -3004,11 +2958,11 @@ dependencies = [
 
 [[package]]
 name = "thread_local"
-version = "1.1.1"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "301bdd13d23c49672926be451130892d274d3ba0b410c18e00daa7990ff38d99"
+checksum = "bb9bc092d0d51e76b2b19d9d85534ffc9ec2db959a2523cdae0697e2972cd447"
 dependencies = [
- "once_cell",
+ "lazy_static",
 ]
 
 [[package]]
@@ -3044,6 +2998,32 @@ dependencies = [
  "http-types",
  "serde",
  "tide",
+]
+
+[[package]]
+name = "tide-handlebars-graphql-mongodb"
+version = "0.1.0"
+dependencies = [
+ "async-graphql",
+ "async-graphql-tide",
+ "async-std",
+ "base64 0.13.0",
+ "bson",
+ "chrono",
+ "dotenv",
+ "futures",
+ "graphql_client",
+ "handlebars",
+ "jsonwebtoken",
+ "lazy_static",
+ "mongodb",
+ "regex",
+ "ring",
+ "serde",
+ "serde_json",
+ "surf",
+ "tide",
+ "tide-handlebars",
 ]
 
 [[package]]
