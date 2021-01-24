@@ -32,6 +32,8 @@ cargo run
 
 GraphiQL: connect to http://127.0.0.1:8080/graphiql with browser.
 
+![Graphql Image](../screenshot/graphql.jpg)
+
 ## Queries
 
 - getUserByEmail(...): User!
