@@ -13,10 +13,8 @@ async fn main() -> Result<(), std::io::Error> {
     tide::log::start();
 
     // Initialize the application with state.
-    let mut app = tide::new();
-    // // If you don't want to use crate async-graphql-tide
-    // let schema = gql::build_schema().await;
-    // let mut app = tide::with_state(State { schema: schema.clone() });
+    let app_state = State {};
+    let mut app = tide::with_state(app_state);
 
     //environment variables defined in .env file
     // app.at(CFG.get("GRAPHQL_PATH").unwrap()).post(async_graphql_tide::endpoint(schema));
@@ -34,8 +32,11 @@ async fn main() -> Result<(), std::io::Error> {
     Ok(())
 }
 
+//  Tide application scope state.
+#[derive(Clone)]
+pub struct State {}
+
 // // If you don't want to use crate async-graphql-tide
-// //  Tide application scope state.
 // #[derive(Clone)]
 // pub struct State {
 //     pub schema: async_graphql::Schema<

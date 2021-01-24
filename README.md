@@ -33,7 +33,7 @@ Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-
 
 ``` Bash
 git clone https://github.com/zzy/tide-graphql-mongodb.git
-cd tide-handlebars-graphql-mongodb
+cd tide-graphql-mongodb
 cargo build
 ```
 

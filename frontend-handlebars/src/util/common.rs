@@ -1,6 +1,6 @@
 use serde::Serialize;
 use tide::{
-    Response, StatusCode,
+    Response, StatusCode, Body,
     {http::mime::HTML},
 };
 
@@ -38,7 +38,9 @@ impl Tpl {
     {
         let mut resp = Response::new(StatusCode::Ok);
         resp.set_content_type(HTML);
-        resp.set_body(self.reg.render(&self.name, data).unwrap());
+        resp.set_body(Body::from_string(
+            self.reg.render(&self.name, data).unwrap(),
+        ));
 
         Ok(resp.into())
     }

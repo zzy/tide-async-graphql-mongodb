@@ -8,7 +8,7 @@ use crate::{State, util::common::Tpl};
 use crate::routes::{users::user_index, projects::project_index};
 
 pub async fn push_res(mut app: Server<State>) -> Server<State> {
-    app.at("/static").serve_dir("static").unwrap();
+    app.at("/").serve_dir("static").unwrap();
 
     //environment variables defined in .env file
     app.at("/").get(index);
@@ -22,8 +22,7 @@ async fn index(_req: Request<State>) -> tide::Result {
     let index: Tpl = Tpl::new("index").await;
 
     // make data and render it
-    let data =
-        json!({"app_name": "tide-handlebars-graphql-mongodb", "author": "zzy"});
+    let data = json!({"app_name": "tide-graphql-mongodb", "author": "zzy"});
 
     index.render(&data).await
 }

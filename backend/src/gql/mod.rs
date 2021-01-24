@@ -7,6 +7,8 @@ use tide::{Request, Response, StatusCode};
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig};
 use async_graphql::{Schema, EmptySubscription};
 
+use crate::State;
+
 use crate::util::constant::CFG;
 use crate::dbs::mongo;
 
@@ -28,7 +30,7 @@ async fn build_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription> {
         .finish()
 }
 
-pub async fn graphql(req: Request<()>) -> tide::Result {
+pub async fn graphql(req: Request<State>) -> tide::Result {
     let schema = self::build_schema().await;
 
     let token = req
@@ -55,7 +57,7 @@ pub async fn graphql(req: Request<()>) -> tide::Result {
 //     Ok(resp.into())
 // }
 
-pub async fn graphiql(_: Request<()>) -> tide::Result {
+pub async fn graphiql(_: Request<State>) -> tide::Result {
     let mut resp = Response::new(StatusCode::Ok);
     resp.set_body(playground_source(GraphQLPlaygroundConfig::new(
         CFG.get("GRAPHQL_PATH").unwrap(),
