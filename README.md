@@ -16,6 +16,7 @@ Clean boilerplate for graphql services using tide, rhai, async-graphql, surf, gr
 - Web Application
   - [x] Client request, bring & parse GraphQL data
   - [x] Render data to template engine
+  - [x] Define custom helper with Rhai scripting language
 
 ## Stacks
 
