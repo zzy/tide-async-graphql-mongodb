@@ -3,6 +3,7 @@ use tide::{
     Response, StatusCode, Body,
     {http::mime::HTML},
 };
+use handlebars::Handlebars;
 
 use crate::util::constant::CFG;
 
@@ -14,18 +15,24 @@ pub async fn gql_uri() -> String {
     format!("http://{}:{}/{}", address, gql_port, gql_path)
 }
 
-pub struct Tpl {
-    pub name: String,
-    pub reg: handlebars::Handlebars<'static>,
+pub async fn rhai_dir() -> String {
+    format!("./{}/", "rhai")
 }
 
-impl Tpl {
-    pub async fn new(rel_path: &str) -> Tpl {
+pub struct Tpl<'tpl> {
+    pub name: String,
+    pub reg: Handlebars<'tpl>,
+}
+
+impl<'tpl> Tpl<'tpl> {
+    pub async fn new(rel_path: &str) -> Tpl<'tpl> {
         let tpl_name = &rel_path.replace("/", "_");
         let abs_path = format!("./templates/{}.html", rel_path);
 
         // create the handlebars registry
-        let mut hbs_reg = handlebars::Handlebars::new();
+        let mut hbs_reg = Handlebars::new();
+        // enable dev mode for template reloading
+        // hbs_reg.set_dev_mode(true);
         // register template from a file and assign a name to it
         hbs_reg.register_template_file(tpl_name, abs_path).unwrap();
 

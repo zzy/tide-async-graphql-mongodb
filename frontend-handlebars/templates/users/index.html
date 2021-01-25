@@ -12,7 +12,7 @@
     <h1>all users</h1>
     <ul>
       {{#each allUsers as |u|}}
-        <li><b>{{u.username}}</b></li>
+        <li><b>{{u.username}} - (length: {{length u.username}})</b></li>
         <ul>
           <li>{{ u.id }}</li>
           <li>{{ u.email }}</li>

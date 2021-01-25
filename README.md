@@ -1,6 +1,6 @@
 # tide-graphql-mongodb
 
-Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-client, handlebars-rust, jsonwebtoken, and mongodb. 
+Clean boilerplate for graphql services using tide, rhai, async-graphql, surf, graphql-client, handlebars-rust, jsonwebtoken, and mongodb. 
 
 ## Features
 
@@ -21,6 +21,7 @@ Clean boilerplate for graphql services using tide, async-graphql, surf, graphql-
 
 - [Rust](https://www.rust-lang.org) - [中文资料集萃](https://budshome.com)
 - [Tide](https://crates.io/crates/tide) - [中文文档](https://tide.budshome.com)
+- [rhai](https://crates.io/crates/rhai) - Embedded Scripting for Rust
 - [async-graphql](https://crates.io/crates/async-graphql) - [中文文档](https://async-graphql.budshome.com)
 - [mongodb & mongo-rust-driver](https://crates.io/crates/mongodb)
 - [Surf](https://crates.io/crates/surf)
