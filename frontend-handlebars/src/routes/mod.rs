@@ -7,7 +7,8 @@ pub mod projects;
 use crate::{State, util::common::Tpl};
 use crate::routes::{users::user_index, projects::project_index};
 
-pub async fn push_res(mut app: Server<State>) -> Server<State> {
+// pub async fn push_res(mut app: Server<State>) -> Server<State> {
+pub async fn push_res(app: &mut Server<State>) {
     app.at("/static").serve_dir("./static").unwrap();
 
     //environment variables defined in .env file
@@ -15,7 +16,7 @@ pub async fn push_res(mut app: Server<State>) -> Server<State> {
     app.at("users").get(user_index);
     app.at("projects").get(project_index);
 
-    app
+    // app
 }
 
 async fn index(_req: Request<State>) -> tide::Result {
