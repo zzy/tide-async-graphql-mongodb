@@ -6,6 +6,7 @@ mod users;
 mod projects;
 
 use crate::util::constant::CFG;
+use crate::gql::{build_schema, graphql, graphiql};
 
 #[async_std::main]
 async fn main() -> Result<(), std::io::Error> {
@@ -13,14 +14,12 @@ async fn main() -> Result<(), std::io::Error> {
     tide::log::start();
 
     // Initialize the application with state.
-    let app_state = State {};
+    let app_state = State { schema: build_schema().await };
     let mut app = tide::with_state(app_state);
 
     //environment variables defined in .env file
-    // app.at(CFG.get("GRAPHQL_PATH").unwrap()).post(async_graphql_tide::endpoint(schema));
-    // If you don't want to use crate async-graphql-tide
-    app.at(CFG.get("GRAPHQL_PATH").unwrap()).post(gql::graphql);
-    app.at(CFG.get("GRAPHIQL_PATH").unwrap()).get(gql::graphiql);
+    app.at(CFG.get("GRAPHQL_PATH").unwrap()).post(graphql);
+    app.at(CFG.get("GRAPHIQL_PATH").unwrap()).get(graphiql);
 
     app.listen(format!(
         "{}:{}",
@@ -32,16 +31,11 @@ async fn main() -> Result<(), std::io::Error> {
     Ok(())
 }
 
-//  Tide application scope state.
 #[derive(Clone)]
-pub struct State {}
-
-// // If you don't want to use crate async-graphql-tide
-// #[derive(Clone)]
-// pub struct State {
-//     pub schema: async_graphql::Schema<
-//         gql::queries::QueryRoot,
-//         gql::mutations::MutationRoot,
-//         async_graphql::EmptySubscription,
-//     >,
-// }
+pub struct State {
+    pub schema: async_graphql::Schema<
+        gql::queries::QueryRoot,
+        gql::mutations::MutationRoot,
+        async_graphql::EmptySubscription,
+    >,
+}

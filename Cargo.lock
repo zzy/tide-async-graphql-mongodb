@@ -249,16 +249,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "async-graphql-tide"
-version = "2.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c211fc130b64ca0b628c522136dc131d4cf7e06b7d640bce5ea565898e6c17d7"
-dependencies = [
- "async-graphql",
- "tide",
-]
-
-[[package]]
 name = "async-graphql-value"
 version = "2.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -459,7 +449,6 @@ name = "backend"
 version = "1.0.0"
 dependencies = [
  "async-graphql",
- "async-graphql-tide",
  "async-std",
  "base64 0.13.0",
  "bson",
@@ -605,9 +594,9 @@ dependencies = [
 
 [[package]]
 name = "bumpalo"
-version = "3.5.0"
+version = "3.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f07aa6688c702439a1be0307b6a94dffe1168569e45b9500c1372bc580740d59"
+checksum = "099e596ef14349721d9016f6b80dd3419ea1bf289ab9b44df8e4dfd3a005d5d9"
 
 [[package]]
 name = "byte-pool"
@@ -922,9 +911,9 @@ dependencies = [
 
 [[package]]
 name = "data-encoding"
-version = "2.3.1"
+version = "2.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "993a608597367c6377b258c25d7120740f00ed23a2252b729b1932dd7866f908"
+checksum = "3ee2393c4a91429dffb4bedf19f4d6abf27d8a732c8ce4980305d782e5426d57"
 
 [[package]]
 name = "derivative"
@@ -3026,9 +3015,9 @@ dependencies = [
 
 [[package]]
 name = "tide"
-version = "0.15.1"
+version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8889753e7e7b9d1ceb7a67e7df8c3994b4657082219d78eb379f71fe2934e66b"
+checksum = "c459573f0dd2cc734b539047f57489ea875af8ee950860ded20cf93a79a1dee0"
 dependencies = [
  "async-h1",
  "async-session",
@@ -3041,7 +3030,7 @@ dependencies = [
  "http-types",
  "kv-log-macro",
  "log",
- "pin-project-lite 0.1.11",
+ "pin-project-lite 0.2.4",
  "route-recognizer",
  "serde",
  "serde_json",
