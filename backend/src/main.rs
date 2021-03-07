@@ -14,7 +14,8 @@ async fn main() -> Result<(), std::io::Error> {
     tide::log::start();
 
     // Initialize the application with state.
-    let app_state = State { schema: build_schema().await };
+    let schema = build_schema().await;
+    let app_state = State { schema: schema };
     let mut app = tide::with_state(app_state);
 
     //environment variables defined in .env file
@@ -31,6 +32,7 @@ async fn main() -> Result<(), std::io::Error> {
     Ok(())
 }
 
+//  Tide application scope state.
 #[derive(Clone)]
 pub struct State {
     pub schema: async_graphql::Schema<
