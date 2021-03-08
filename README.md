@@ -2,6 +2,8 @@
 
 Clean boilerplate for graphql services using tide, rhai, async-graphql, surf, graphql-client, handlebars-rust, jsonwebtoken, and mongodb. 
 
+See also: https://github.com/zzy/surfer
+
 ## Features
 
 - Graphql Services
