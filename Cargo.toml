@@ -4,3 +4,8 @@ members = [
   "./frontend-handlebars",
   "./frontend-wasm",
 ]
+
+resolver = "2"
+
+[profile.dev]
+split-debuginfo = "unpacked"
