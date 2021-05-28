@@ -2,7 +2,7 @@
 members = [
   "./backend",
   "./frontend-handlebars",
-  "./frontend-wasm",
+  "./frontend-yew",
 ]
 
 resolver = "2"

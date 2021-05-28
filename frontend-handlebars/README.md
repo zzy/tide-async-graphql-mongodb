@@ -1,8 +1,8 @@
 # Tide Server
 
 ``` Bash
-git clone https://github.com/zzy/tide-graphql-mongodb.git
-cd tide-graphql-mongodb
+git clone https://github.com/zzy/tide-async-graphql-mongodb.git
+cd tide-async-graphql-mongodb
 cargo build
 
 cd frontend-handlebars
@@ -14,19 +14,19 @@ Rename file `.env.example` to `.env`, or put the environment variables into a `.
 ADDRESS=127.0.0.1
 PORT=3000
 
-GRAPHQL_PORT=8080
+GRAPHQL_PORT=8000
 GRAPHQL_PATH=graphql
 GRAPHIQL_PATH=graphiql
 ```
 
-Build & Run:
+## Build & Run:
 
 ``` Bash
 cargo run
 ```
 Then connect to http://127.0.0.1:3000 with browser.
 
-![Client Image](../screenshot/client.jpg)
+![Client Image](../data/client.jpg)
 
 ## Contributing
 

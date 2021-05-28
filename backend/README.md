@@ -1,8 +1,16 @@
 # Graphql Server
 
+## MongoDB data
+
+MongoDB data(include structure & documents) file is `/data/budshome.sql`.
+
+If you need mongodb cloud count, email to me or wechat(微信): yupen-com, please.
+
+## Build & run
+
 ``` Bash
-git clone https://github.com/zzy/tide-graphql-mongodb.git
-cd tide-graphql-mongodb
+git clone https://github.com/zzy/tide-async-graphql-mongodb.git
+cd tide-async-graphql-mongodb
 cargo build
 
 cd backend
@@ -12,7 +20,7 @@ Rename file `.env.example` to `.env`, or put the environment variables into a `.
 
 ```
 ADDRESS=127.0.0.1
-PORT=8080
+PORT=8000
 
 GRAPHQL_PATH=graphql
 GRAPHIQL_PATH=graphiql
@@ -24,15 +32,15 @@ SITE_KEY=0F4EHz+1/hqVvZjuB8EcooQs1K6QKBvLUxqTHt4tpxE=
 CLAIM_EXP=10000000000
 ```
 
-Build & Run:
+## Build & Run:
 
 ``` Bash
 cargo run
 ```
 
-GraphiQL: connect to http://127.0.0.1:8080/graphiql with browser.
+GraphiQL: connect to http://127.0.0.1:8000/graphiql with browser.
 
-![Graphql Image](../screenshot/graphql.jpg)
+![Graphql Image](../data/graphql.jpg)
 
 ## Queries
 
