@@ -49,7 +49,7 @@ cargo build
 
 ### Frontend - Tide Server
 
-- [**Frontend: web application server**](./frontend/README.md)
+- [**Frontend: web application server**](./frontend-handlebars/README.md)
 
 ``` Bash
 cd frontend-handlebars
