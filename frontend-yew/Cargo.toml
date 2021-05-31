@@ -9,3 +9,6 @@ yew = "0.18.0"
 yew-router = "0.15.0"
 
 wasm-bindgen = "0.2.74"
+
+serde = { version = "1.0.126", features = ["derive"] }
+anyhow = "1.0.40"

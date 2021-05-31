@@ -1127,6 +1127,8 @@ dependencies = [
 name = "frontend-yew"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
+ "serde",
  "wasm-bindgen",
  "yew",
  "yew-router",
