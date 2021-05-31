@@ -6,4 +6,6 @@ edition = "2018"
 
 [dependencies]
 yew = "0.18.0"
+yew-router = "0.15.0"
+
 wasm-bindgen = "0.2.74"
