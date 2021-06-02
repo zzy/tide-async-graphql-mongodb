@@ -40,7 +40,7 @@ cargo run
 
 GraphiQL: connect to http://127.0.0.1:8000/graphiql with browser.
 
-![Graphql Image](../data/graphql.jpg)
+![Graphql Image](../data/graphiql.jpg)
 
 ## Queries
 

@@ -26,7 +26,7 @@ cargo run
 ```
 Then connect to http://127.0.0.1:3000 with browser.
 
-![Client Image](../data/client.jpg)
+![Client Image](../data/handlebars.jpg)
 
 ## How to Test & Run `rhai scripts`
 
