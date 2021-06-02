@@ -192,9 +192,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql"
-version = "2.8.5"
+version = "2.8.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4b7b63cfab4ccfdb198cf8a0c290a79a9c5909a73c81718147e5f5b25158b428"
+checksum = "c07da609e7c59d60c1ca88d743f99df0c79fd431f977acc426a96aa59c0013c2"
 dependencies = [
  "async-graphql-derive",
  "async-graphql-parser",
@@ -1128,8 +1128,13 @@ name = "frontend-yew"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "dotenv",
+ "graphql_client",
+ "lazy_static",
  "serde",
+ "serde_json",
  "wasm-bindgen",
+ "wasm-bindgen-futures",
  "yew",
  "yew-router",
 ]
@@ -3410,9 +3415,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-futures"
-version = "0.4.23"
+version = "0.4.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "81b8b767af23de6ac18bf2168b690bed2902743ddf0fb39252e36f9e2bfc63ea"
+checksum = "5fba7978c679d53ce2d0ac80c8c175840feb849a161664365d1287b41f2e67f1"
 dependencies = [
  "cfg-if 1.0.0",
  "js-sys",

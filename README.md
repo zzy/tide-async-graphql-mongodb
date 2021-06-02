@@ -1,6 +1,6 @@
 # tide-async-graphql-mongodb
 
-Clean boilerplate for graphql services using tide, rhai, async-graphql, surf, graphql-client, handlebars-rust, jsonwebtoken, and mongodb. 
+Clean boilerplate for graphql services using tide, rhai, async-graphql, surf, graphql-client, yew, handlebars-rust, jsonwebtoken, and mongodb.
 
 See also: https://github.com/zzy/surfer
 
@@ -28,6 +28,7 @@ See also: https://github.com/zzy/surfer
 - [async-graphql](https://crates.io/crates/async-graphql) - [中文文档](https://async-graphql.budshome.com)
 - [mongodb & mongo-rust-driver](https://crates.io/crates/mongodb)
 - [Surf](https://crates.io/crates/surf)
+- [yew](https://crates.io/crates/yew)
 - [graphql_client](https://crates.io/crates/graphql_client)
 - [handlebars-rust](https://crates.io/crates/handlebars)
 - [jsonwebtoken](https://crates.io/crates/jsonwebtoken)
@@ -41,147 +42,31 @@ If you need mongodb cloud count, email to me or wechat(微信): yupen-com, pleas
 
 ## How to run?
 
-``` Bash
-git clone https://github.com/zzy/tide-async-graphql-mongodb.git
-cd tide-async-graphql-mongodb
-cargo build
-```
+Please read:
 
-### Frontend - Tide Server
-
-- [**Frontend: web application server**](./frontend-handlebars/README.md)
-
-``` Bash
-cd frontend-handlebars
-```
-
-Rename file `.env.example` to `.env`, or put the environment variables into a `.env` file:
-
-```
-ADDRESS=127.0.0.1
-PORT=3000
-
-GRAPHQL_PORT=8000
-GRAPHQL_PATH=graphql
-GRAPHIQL_PATH=graphiql
-```
-
-Build & Run:
-
-``` Bash
-cargo run
-```
-Then connect to http://127.0.0.1:3000 with browser.
-
-![Client Image](./data/client.jpg)
-
-### Backend - Graphql Server
-
+- [**Frontend-handlebars: web application server**](./frontend-handlebars/README.md)
+- [**Frontend-yew: web application server**](./frontend-yew/README.md)
 - [**Backend: graphql servies server**](./backend/README.md)
 
-``` Bash
-cd backend
+## How to Test & Run `rhai scripts`
+
+You could use `rhai-repl` to test your rhai code, and use `rhai-run` to run it. `rhai-repl.rs` and `rhai-run.rs` are in the folder `frontend/scripts`, please copy them into `frontend/examples` folder, then test or run rhai code with command:
+
+``` bash 
+cargo run --example <rhai-repl>/<rhai-run ./scripts/script_to_run.rhai>
+``` 
+
+If you would want to install the rhai tool, use the command 
+
+``` bash
+cargo install --path . --example <rhai-repl>/<rhai-run>
 ```
 
-Rename file `.env.example` to `.env`, or put the environment variables into a `.env` file:
+then test rhai code using `rhai-repl`, and run scripts using the `rhai-run`:
 
+``` bash
+rhai-run ./scripts/script_to_run.rhai
 ```
-ADDRESS=127.0.0.1
-PORT=8000
-
-GRAPHQL_PATH=graphql
-GRAPHIQL_PATH=graphiql
-
-MONGODB_URI=mongodb://mongo:mongo@127.0.0.1:27017
-MONGODB_BUDSHOME=budshome
-
-SITE_KEY=0F4EHz+1/hqVvZjuB8EcooQs1K6QKBvLUxqTHt4tpxE=
-CLAIM_EXP=10000000000
-```
-
-Build & Run:
-
-``` Bash
-cargo run
-```
-
-GraphiQL: connect to http://127.0.0.1:8000/graphiql with browser.
-
-![Graphql Image](./data/graphql.jpg)
-
-## Queries
-
-- getUserByEmail(...): User!
-- getUserByUsername(...): User!
-- userSignIn(...): SignInfo!
-- allUsers(...): [User!]!
-- allProjects: [Project!]!
-- allProjectsByUser(...): [Project!]!
-
-## MUTATIONS
-
-- userRegister(...): User!
-- userChangePassword(...): User!
-- userUpdateProfile(...): User!
-- addProject(...): Project!
-
-## Sample Usage
-
-Sample mutation for user register:
-```
-mutation {
-  userRegister(
-    newUser: { 
-      email: "example@budshome.com", 
-      username: "我是谁", 
-      password: "wo#$shi^$shui" 
-    }
-  ) {
-    id
-    email
-    username
-  }
-}
-```
-
-Sample query for user sign in:
-```
-{
-  userSignIn(
-    userAccount: {
-      email: "example@budshome.com"
-      username: ""
-      password: "wo#$shi^$shui"
-    }
-  ) {
-    email
-    username
-    token
-  }
-}
-```
-
-When submit method `userSignIn`, a token would be generated, use this token for query all users and every user's projects:
-```
-{
-  allUsers(
-    token: "fyJ0eXAiOiJKV1Q..."
-  ) {
-    id
-    email
-    username
-
-    projects {
-      id
-      userId
-      subject
-      website
-    }
-  }
-}
-```
-
-Sample query and mutation for projects was similar to users.
 
 ## Contributing
 

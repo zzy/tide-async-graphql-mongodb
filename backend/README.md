@@ -1,4 +1,4 @@
-# Graphql Server
+# Graphql Services Server
 
 ## MongoDB data
 
@@ -32,7 +32,7 @@ SITE_KEY=0F4EHz+1/hqVvZjuB8EcooQs1K6QKBvLUxqTHt4tpxE=
 CLAIM_EXP=10000000000
 ```
 
-## Build & Run:
+Then, build & run:
 
 ``` Bash
 cargo run

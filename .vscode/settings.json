@@ -1,4 +1,7 @@
 {
+    "emmet.includeLanguages": {
+        "rust": "html",
+    },
     "files.associations": {
         "*.html": "handlebars"
     },
