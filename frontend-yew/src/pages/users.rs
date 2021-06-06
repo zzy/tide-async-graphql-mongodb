@@ -20,7 +20,7 @@ impl Component for Users {
 
     fn view(&self) -> Html {
         html! {
-            <div>
+            <div class="users">
             { "用户列表 - 蓝色" }
             </div>
         }

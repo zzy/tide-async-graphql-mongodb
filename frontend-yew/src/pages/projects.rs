@@ -20,7 +20,7 @@ impl Component for Projects {
 
     fn view(&self) -> Html {
         html! {
-            <div>
+            <div class=classes!("projects")>
             { "项目列表 - 绿色" }
             </div>
         }

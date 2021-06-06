@@ -19,8 +19,10 @@ impl Component for Home {
     }
 
     fn view(&self) -> Html {
+        let home_cls = "home";
+
         html! {
-            <div>
+            <div class=classes!(home_cls)>
                { "主界面 - 红色" }
             </div>
         }

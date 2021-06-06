@@ -15,6 +15,20 @@ pub enum Route {
     Home,
 }
 
+fn switch(switch: Route) -> Html {
+    match switch {
+        Route::Users => {
+            html! { <Users/> }
+        }
+        Route::Projects => {
+            html! { <Projects/> }
+        }
+        Route::Home => {
+            html! { <Home /> }
+        }
+    }
+}
+
 struct App;
 
 impl Component for App {
@@ -25,23 +39,26 @@ impl Component for App {
         Self
     }
 
-    fn update(&mut self, _: Self::Message) -> bool {
+    fn update(&mut self, _: Self::Message) -> ShouldRender {
         unimplemented!()
     }
 
-    fn change(&mut self, _: Self::Properties) -> bool {
+    fn change(&mut self, _: Self::Properties) -> ShouldRender {
         unimplemented!()
     }
 
     fn view(&self) -> Html {
         type Anchor = RouterAnchor<Route>;
 
+        let home_cls = "nav";
+
         html! {
             <>
-            <div>
+            <div class="logo-title">
+                <img src="imgs/budshome.png" />
                 { "tide-async-graphql-mongodb / frontend-yew" }
             </div>
-            <div>
+            <div class=home_cls>
                 <Anchor route=Route::Users>
                     { "用户列表" }
                 </Anchor>
@@ -55,15 +72,7 @@ impl Component for App {
                 </Anchor>
             </div>
             <main>
-                <Router<Route, ()>
-                    render = Router::render(|switch: Route| {
-                        match switch {
-                            Route::Users => html!{ <Users/> },
-                            Route::Projects => html!{ <Projects/> },
-                            Route::Home => html!{ <Home/> },
-                        }
-                    })
-                />
+                <Router<Route> render=Router::render(switch) />
             </main>
             </>
         }
