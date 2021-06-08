@@ -1,8 +1,9 @@
+mod pages;
+
 use yew::prelude::*;
 use yew_router::prelude::*;
 use yew_router::components::RouterAnchor;
 
-mod pages;
 use pages::{home::Home, users::Users, projects::Projects};
 
 #[derive(Switch, Debug, Clone, PartialEq)]
@@ -62,11 +63,11 @@ impl Component for App {
                 <Anchor route=Route::Users>
                     { "用户列表" }
                 </Anchor>
-                { " - " }
+                <span class="placeholder">{ " - " }</span>
                 <Anchor route=Route::Projects>
                     { "项目列表" }
                 </Anchor>
-                { " - " }
+                <span class="placeholder">{ " - " }</span>
                 <Anchor route=Route::Home>
                     { "主页" }
                 </Anchor>

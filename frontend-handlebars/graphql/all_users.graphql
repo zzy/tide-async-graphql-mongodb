@@ -1,5 +1,7 @@
 query AllUsers($token: String!) {
-  allUsers(token: $token) {
+  allUsers(
+    token: $token
+  ) {
     id
     email
     username

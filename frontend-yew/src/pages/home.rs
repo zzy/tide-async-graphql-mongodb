@@ -23,7 +23,8 @@ impl Component for Home {
 
         html! {
             <div class=classes!(home_cls)>
-               { "主界面 - 红色" }
+               <h1>{ "Rust + WebAssembly" }</h1>
+               <h4>{ "使用 yew 构建 WebAssembly 标准的 web 前端" }</h4>
             </div>
         }
     }

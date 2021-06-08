@@ -1127,7 +1127,11 @@ dependencies = [
 name = "frontend-yew"
 version = "0.1.0"
 dependencies = [
+ "graphql_client",
+ "serde",
+ "serde_json",
  "wasm-bindgen",
+ "wasm-bindgen-futures",
  "yew",
  "yew-router",
 ]

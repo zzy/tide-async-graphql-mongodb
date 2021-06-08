@@ -1,3 +1,8 @@
 .home {
-    background-color: red;
+    font-size: xx-large;
+    font-weight: bolder;
+}
+
+.placeholder {
+    padding: 5px;
 }
