@@ -11,11 +11,11 @@ impl Component for Home {
     }
 
     fn update(&mut self, _msg: Self::Message) -> ShouldRender {
-        unimplemented!()
+        false
     }
 
     fn change(&mut self, _props: Self::Properties) -> ShouldRender {
-        unimplemented!()
+        false
     }
 
     fn view(&self) -> Html {

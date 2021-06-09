@@ -41,11 +41,11 @@ impl Component for App {
     }
 
     fn update(&mut self, _: Self::Message) -> ShouldRender {
-        unimplemented!()
+        false
     }
 
     fn change(&mut self, _: Self::Properties) -> ShouldRender {
-        unimplemented!()
+        false
     }
 
     fn view(&self) -> Html {
