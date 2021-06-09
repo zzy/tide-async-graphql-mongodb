@@ -192,9 +192,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql"
-version = "2.8.6"
+version = "2.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c07da609e7c59d60c1ca88d743f99df0c79fd431f977acc426a96aa59c0013c2"
+checksum = "8934e4768fb880408eb7459046b6399e35cb8e2a5c3506db0ba8205181318161"
 dependencies = [
  "async-graphql-derive",
  "async-graphql-parser",
@@ -220,9 +220,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-derive"
-version = "2.8.5"
+version = "2.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "21bb58a182c309b6892a3d051d9639d29d027ae3e271b81f9d0aaa2072c4add4"
+checksum = "be53d483cbc4edd31c1dd5d2f9771bc144617ecda55e52ca0bc3b0278979d36f"
 dependencies = [
  "Inflector",
  "async-graphql-parser",
@@ -236,9 +236,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-parser"
-version = "2.8.5"
+version = "2.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "467b630648f842082f41342388b6c74fc0b993e7b4a940bc25660a76b529f7b1"
+checksum = "85917fc15fb089790a8700cfe09acc8fd7b0ad184ee14d20ed77f46560ddad6a"
 dependencies = [
  "async-graphql-value",
  "pest",
@@ -249,9 +249,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-value"
-version = "2.6.5"
+version = "2.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d8342ada84efe4b3d59e1313d1d2740a8ccfc76ddb57ccf55e45a6464dd7d0d3"
+checksum = "6432187991304d21e9759f78cd1d0254a370c995c4bd58853d298f8d5b566f1c"
 dependencies = [
  "serde",
  "serde_json",
@@ -1938,21 +1938,21 @@ dependencies = [
 
 [[package]]
 name = "multer"
-version = "1.2.2"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "99851e6ad01b0fbe086dda2dea00d68bb84fc7d7eae2c39ca7313da9197f4d31"
+checksum = "0fdd568fea4758b30d6423f013f7171e193c34aa97828d1bd9f924fb3af30a8c"
 dependencies = [
- "bytes 0.5.6",
+ "bytes 1.0.1",
  "derive_more",
  "encoding_rs",
- "futures",
+ "futures-util",
  "http",
  "httparse",
- "lazy_static",
  "log",
  "mime",
- "regex",
+ "spin 0.9.0",
  "twoway",
+ "version_check",
 ]
 
 [[package]]
@@ -2477,7 +2477,7 @@ dependencies = [
  "cc",
  "libc",
  "once_cell",
- "spin",
+ "spin 0.5.2",
  "untrusted",
  "web-sys",
  "winapi 0.3.9",
@@ -2789,6 +2789,12 @@ name = "spin"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6e63cff320ae2c57904679ba7cb63280a3dc4613885beafb148ee7bf9aa9042d"
+
+[[package]]
+name = "spin"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b87bbf98cb81332a56c1ee8929845836f85e8ddd693157c30d76660196014478"
 
 [[package]]
 name = "spinning_top"
