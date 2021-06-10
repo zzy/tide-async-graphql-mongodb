@@ -16,7 +16,7 @@ pub async fn gql_uri() -> String {
 }
 
 pub async fn rhai_dir() -> String {
-    format!("./{}/", "rhai")
+    format!("./{}/", "scripts")
 }
 
 pub struct Tpl<'tpl> {

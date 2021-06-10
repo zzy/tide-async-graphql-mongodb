@@ -30,7 +30,7 @@ Then connect to http://127.0.0.1:3000 with browser.
 
 ## How to Test & Run `rhai scripts`
 
-You could use `rhai-repl` to test your rhai code, and use `rhai-run` to run it. `rhai-repl.rs` and `rhai-run.rs` are in the folder `frontend/scripts`, please copy them into `frontend/examples` folder, then test or run rhai code with command:
+You could use `rhai-repl` to test your rhai code, and use `rhai-run` to run it. `rhai-repl.rs` and `rhai-run.rs` are in the folder `frontend-handlebars/scripts`, please copy them into `frontend-handlebars/examples` folder, then test or run rhai code with command:
 
 ``` bash 
 cargo run --example <rhai-repl>/<rhai-run ./scripts/script_to_run.rhai>

@@ -44,29 +44,9 @@ If you need mongodb cloud count, email to me or wechat(微信): yupen-com, pleas
 
 Please read:
 
-- [**Frontend-handlebars: web application server**](./frontend-handlebars/README.md)
-- [**Frontend-yew: web application server**](./frontend-yew/README.md)
 - [**Backend: graphql servies server**](./backend/README.md)
-
-## How to Test & Run `rhai scripts`
-
-You could use `rhai-repl` to test your rhai code, and use `rhai-run` to run it. `rhai-repl.rs` and `rhai-run.rs` are in the folder `frontend/scripts`, please copy them into `frontend/examples` folder, then test or run rhai code with command:
-
-``` bash 
-cargo run --example <rhai-repl>/<rhai-run ./scripts/script_to_run.rhai>
-``` 
-
-If you would want to install the rhai tool, use the command 
-
-``` bash
-cargo install --path . --example <rhai-repl>/<rhai-run>
-```
-
-then test rhai code using `rhai-repl`, and run scripts using the `rhai-run`:
-
-``` bash
-rhai-run ./scripts/script_to_run.rhai
-```
+- [**Frontend-yew: web application server**](./frontend-yew/README.md)
+- [**Frontend-handlebars: web application server**](./frontend-handlebars/README.md)
 
 ## Contributing
 
