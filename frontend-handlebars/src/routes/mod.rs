@@ -23,7 +23,7 @@ async fn index(_req: Request<State>) -> tide::Result {
     let index: Tpl = Tpl::new("index").await;
 
     // make data and render it
-    let data = json!({"app_name": "frontend-handlebars - tide-async-graphql-mongodb", "author": "zzy"});
+    let data = json!({"app_name": "frontend-handlebars / tide-async-graphql-mongodb", "author": "我是谁？"});
 
     index.render(&data).await
 }
