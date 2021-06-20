@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use bson::oid::ObjectId;
+use mongodb::bson::oid::ObjectId;
 
 use crate::util::constant::GqlResult;
 use crate::dbs::mongo::DataSource;

@@ -1,5 +1,8 @@
 use futures::stream::StreamExt;
-use mongodb::Database;
+use mongodb::{
+    Database,
+    bson::{Bson, Document, doc, to_bson, from_bson},
+};
 use async_graphql::{Error, ErrorExtensions};
 use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
 
@@ -11,14 +14,13 @@ use crate::users::models::{User, NewUser, SignInfo};
 
 // get user info by email
 pub async fn get_user_by_email(db: Database, email: &str) -> GqlResult<User> {
-    let coll = db.collection("users");
+    let coll = db.collection::<Document>("users");
 
-    let exist_document = coll.find_one(bson::doc! {"email": email}, None).await;
+    let exist_document = coll.find_one(doc! {"email": email}, None).await;
 
     if let Ok(user_document_exist) = exist_document {
         if let Some(user_document) = user_document_exist {
-            let user: User =
-                bson::from_bson(bson::Bson::Document(user_document)).unwrap();
+            let user: User = from_bson(Bson::Document(user_document)).unwrap();
             Ok(user)
         } else {
             Err(Error::new("2-email")
@@ -35,15 +37,13 @@ pub async fn get_user_by_username(
     db: Database,
     username: &str,
 ) -> GqlResult<User> {
-    let coll = db.collection("users");
+    let coll = db.collection::<Document>("users");
 
-    let exist_document =
-        coll.find_one(bson::doc! {"username": username}, None).await;
+    let exist_document = coll.find_one(doc! {"username": username}, None).await;
 
     if let Ok(user_document_exist) = exist_document {
         if let Some(user_document) = user_document_exist {
-            let user: User =
-                bson::from_bson(bson::Bson::Document(user_document)).unwrap();
+            let user: User = from_bson(Bson::Document(user_document)).unwrap();
             Ok(user)
         } else {
             Err(Error::new("4-username")
@@ -59,7 +59,7 @@ pub async fn user_register(
     db: Database,
     mut new_user: NewUser,
 ) -> GqlResult<User> {
-    let coll = db.collection("users");
+    let coll = db.collection::<Document>("users");
 
     new_user.email = new_user.email.to_lowercase();
     new_user.username = new_user.username.to_lowercase();
@@ -76,9 +76,9 @@ pub async fn user_register(
     } else {
         new_user.cred =
             super::cred::cred_encode(&new_user.username, &new_user.cred).await;
-        let new_user_bson = bson::to_bson(&new_user).unwrap();
+        let new_user_bson = to_bson(&new_user).unwrap();
 
-        if let bson::Bson::Document(document) = new_user_bson {
+        if let Bson::Document(document) = new_user_bson {
             // Insert into a MongoDB collection
             coll.insert_one(document, None)
                 .await
@@ -173,7 +173,7 @@ pub async fn user_sign_in(
 pub async fn all_users(db: Database, token: &str) -> GqlResult<Vec<User>> {
     let token_data = token_data(token).await;
     if token_data.is_ok() {
-        let coll = db.collection("users");
+        let coll = db.collection::<Document>("users");
 
         let mut users: Vec<User> = vec![];
 
@@ -184,8 +184,7 @@ pub async fn all_users(db: Database, token: &str) -> GqlResult<Vec<User>> {
         while let Some(result) = cursor.next().await {
             match result {
                 Ok(document) => {
-                    let user = bson::from_bson(bson::Bson::Document(document))
-                        .unwrap();
+                    let user = from_bson(Bson::Document(document)).unwrap();
                     users.push(user);
                 }
                 Err(error) => {
@@ -236,10 +235,10 @@ pub async fn user_change_password(
                     super::cred::cred_encode(&user.username, new_password)
                         .await;
 
-                let coll = db.collection("users");
+                let coll = db.collection::<Document>("users");
                 coll.update_one(
-                    bson::doc! {"_id": &user._id},
-                    bson::doc! {"$set": {"cred": &user.cred}},
+                    doc! {"_id": &user._id},
+                    doc! {"$set": {"cred": &user.cred}},
                     None,
                 )
                 .await
@@ -273,21 +272,17 @@ pub async fn user_update_profile(
         let email = data.claims.email;
         let user_res = self::get_user_by_email(db.clone(), &email).await;
         if let Ok(mut user) = user_res {
-            let coll = db.collection("users");
+            let coll = db.collection::<Document>("users");
 
             user.email = new_user.email.to_lowercase();
             user.username = new_user.username.to_lowercase();
 
-            let user_bson = bson::to_bson(&user).unwrap();
+            let user_bson = to_bson(&user).unwrap();
             let user_doc = user_bson.as_document().unwrap().to_owned();
 
-            coll.find_one_and_replace(
-                bson::doc! {"_id": &user._id},
-                user_doc,
-                None,
-            )
-            .await
-            .expect("Failed to replace a MongoDB collection!");
+            coll.find_one_and_replace(doc! {"_id": &user._id}, user_doc, None)
+                .await
+                .expect("Failed to replace a MongoDB collection!");
 
             Ok(user)
         } else {
