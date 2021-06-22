@@ -1,3 +1,4 @@
+mod util;
 mod pages;
 
 use yew::prelude::*;

@@ -1153,8 +1153,10 @@ name = "frontend-yew"
 version = "0.1.0"
 dependencies = [
  "graphql_client",
+ "lazy_static",
  "serde",
  "serde_json",
+ "toml",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "yew",
