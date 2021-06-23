@@ -2,8 +2,10 @@
 *~
 *.swp
 
-/target/
-**/*.rs.bk
+# Cargo.lock
+target
+*.rs.bk
 
 .env
-**/dist/
+examples
+dist

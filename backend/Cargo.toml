@@ -6,17 +6,17 @@ edition = "2018"
 
 [dependencies]
 futures = "0.3.15"
-async-std = { version = "1.9.0", features = ["attributes"] }
+async-std = { version="1.9.0", features=["attributes"] }
 tide = "0.16.0"
 
 dotenv = "0.15.0"
 lazy_static = "1.4.0"
 regex = "1.5.4"
 
-async-graphql = { version = "2.9.3", features = ["bson", "chrono"] }
-mongodb = { version = "2.0.0-beta.1", default-features = false, features = ["async-std-runtime"] }
-serde = { version = "1.0.126", features = ["derive"] }
+async-graphql = { version="2.9.4", features=["bson", "chrono"] }
+mongodb = { version="2.0.0-beta.1", default-features=false, features=["async-std-runtime"] }
 
+serde = { version="1.0.126", features=["derive"] }
 jsonwebtoken = "7.2.0"
 ring = "0.16.20"
 base64 = "0.13.0"

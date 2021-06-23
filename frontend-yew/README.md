@@ -14,7 +14,7 @@ cd frontend-yew
 cargo install trunk wasm-bindgen-cli
 
 trunk build
-trunk serve
+trunk serve --release
 ```
 Then connect to http://127.0.0.1:3001 with browser.
 

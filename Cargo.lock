@@ -194,9 +194,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql"
-version = "2.9.3"
+version = "2.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d1365071b22c286b5261ffcc69d19fbe0f4053606d87a8c566781bb101d90c51"
+checksum = "0fb8eb6e6daf83bbba00d062ad416322c37861094ab155ccdf27cc70c343d4ee"
 dependencies = [
  "async-graphql-derive",
  "async-graphql-parser",
@@ -222,9 +222,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-derive"
-version = "2.9.3"
+version = "2.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8e96549be80f87268b0a68d0d2f3c5d5858a6184b2812ec429bd7c8376ac10f7"
+checksum = "e2a5fd43eb48a604f23bae02bd6dd00a73a871b80766a821aeed465f657578d5"
 dependencies = [
  "Inflector",
  "async-graphql-parser",
@@ -238,9 +238,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-parser"
-version = "2.9.3"
+version = "2.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "40c2bd40bbcea7640c6afc8fc0ea835a00af3ee91b7e382249606bfe92807e72"
+checksum = "3241d9ebd71264f89df47fef8ac705cccd94f53fb8590949991618af43865b99"
 dependencies = [
  "async-graphql-value",
  "pest",
@@ -251,9 +251,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-value"
-version = "2.9.3"
+version = "2.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95b052994abb9356bc74db7d8988f8d285e7340a7705f04d051339c395deae04"
+checksum = "d7ad19d4f8fb91afc63360ce00f51f746c65347c89e0d790c48dd3a518b302d2"
 dependencies = [
  "serde",
  "serde_json",
@@ -771,9 +771,9 @@ dependencies = [
 
 [[package]]
 name = "cpufeatures"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed00c67cb5d0a7d64a44f6ad2668db7e7530311dd53ea79bcd4fb022c64911c8"
+checksum = "66c99696f6c9dd7f35d486b9d04d7e6e202aa3e8c40d553f2fdf5e7e0c6a71ef"
 dependencies = [
  "libc",
 ]
@@ -1152,6 +1152,7 @@ dependencies = [
 name = "frontend-yew"
 version = "0.1.0"
 dependencies = [
+ "console_error_panic_hook",
  "graphql_client",
  "lazy_static",
  "serde",
@@ -1159,6 +1160,7 @@ dependencies = [
  "toml",
  "wasm-bindgen",
  "wasm-bindgen-futures",
+ "wee_alloc",
  "yew",
  "yew-router",
 ]
@@ -1824,6 +1826,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b16bd47d9e329435e309c58469fe0791c2d0d1ba96ec0954152a5ae2b04387dc"
 
 [[package]]
+name = "memory_units"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8452105ba047068f40ff7093dd1d9da90898e63dd61736462e9cdda6a90ad3c3"
+
+[[package]]
 name = "mime"
 version = "0.3.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1933,7 +1941,7 @@ dependencies = [
  "httparse",
  "log",
  "mime",
- "spin 0.9.0",
+ "spin 0.9.1",
  "twoway",
  "version_check",
 ]
@@ -2408,9 +2416,9 @@ dependencies = [
 
 [[package]]
 name = "rhai"
-version = "0.20.2"
+version = "0.20.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d862e125236e74d2a5033e88b9cb9404010a6a39516a388f570975494fe73bce"
+checksum = "e8e23c09a050ef3dda3e5c79a73b73659561e2c2907ec4812c1e1391564dd360"
 dependencies = [
  "ahash",
  "instant",
@@ -2423,9 +2431,9 @@ dependencies = [
 
 [[package]]
 name = "rhai_codegen"
-version = "0.3.6"
+version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "643fd67d19aafd45a9e335afe4183dc58ba0cc6a1f43fbe34c7d92c041cdcafc"
+checksum = "4cef02442abe487cae95ff290222c846d7a60f173287cbd5254190f90bc4b11d"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2757,9 +2765,9 @@ checksum = "6e63cff320ae2c57904679ba7cb63280a3dc4613885beafb148ee7bf9aa9042d"
 
 [[package]]
 name = "spin"
-version = "0.9.0"
+version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b87bbf98cb81332a56c1ee8929845836f85e8ddd693157c30d76660196014478"
+checksum = "f5fdd7196b4ae35a111c6dc97f9cc152ca3ea8ad744f7cb46a9f27b3ef8f2f54"
 
 [[package]]
 name = "spinning_top"
@@ -3458,6 +3466,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "aabe153544e473b775453675851ecc86863d2a81d786d741f6b76778f2a48940"
 dependencies = [
  "webpki",
+]
+
+[[package]]
+name = "wee_alloc"
+version = "0.4.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dbb3b5a6b2bb17cb6ad44a2e68a43e8d2722c997da10e928665c72ec6c0a0b8e"
+dependencies = [
+ "cfg-if 0.1.10",
+ "libc",
+ "memory_units",
+ "winapi",
 ]
 
 [[package]]
