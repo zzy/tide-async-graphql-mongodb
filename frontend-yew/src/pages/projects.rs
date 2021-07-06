@@ -1,23 +1,17 @@
-use graphql_client::GraphQLQuery;
-use serde_json::Value;
 use std::fmt::Debug;
-use wasm_bindgen::{prelude::*, JsCast};
-use wasm_bindgen_futures::{spawn_local, JsFuture};
-use yew::web_sys::{Request, RequestInit, RequestMode, Response};
-use yew::{html, Component, ComponentLink, Html, ShouldRender};
+use wasm_bindgen_futures::spawn_local;
 
-use crate::util::common::gql_uri;
+use yew::{format::Json, prelude::*};
+use yew::services::fetch::{FetchService, FetchTask, Request, Response};
 
-#[derive(Debug, Clone, PartialEq)]
-pub struct FetchError {
-    err: JsValue,
-}
+use graphql_client::GraphQLQuery;
+use serde_json::{Value, from_str};
 
-impl From<JsValue> for FetchError {
-    fn from(value: JsValue) -> Self {
-        Self { err: value }
-    }
-}
+use crate::util::{constant::ObjectId, common::gql_uri};
+
+////////////////////////////////////////////////////
+// Fetch projects data use `yew::services::fetch` //
+////////////////////////////////////////////////////
 
 #[derive(GraphQLQuery)]
 #[graphql(
@@ -26,40 +20,75 @@ impl From<JsValue> for FetchError {
     response_derives = "Debug"
 )]
 struct AllProjects;
-type ObjectId = String;
 
-async fn fetch_projects() -> Result<Vec<Value>, FetchError> {
-    let build_query = AllProjects::build_query(all_projects::Variables {});
-    let query = serde_json::json!(build_query);
-
-    let mut opts = RequestInit::new();
-    opts.method("POST");
-    opts.body(Some(&JsValue::from_str(&query.to_string())));
-    opts.mode(RequestMode::Cors); // 可以不写，默认为 Cors
-
-    let request = Request::new_with_str_and_init(&gql_uri().await, &opts)?;
-
-    let window = yew::utils::window();
-    let resp_value =
-        JsFuture::from(window.fetch_with_request(&request)).await?;
-    let resp: Response = resp_value.dyn_into().unwrap();
-    let resp_text = JsFuture::from(resp.text()?).await?;
-
-    let projects_str = resp_text.as_string().unwrap();
-    let projects_value: Value = serde_json::from_str(&projects_str).unwrap();
-    let projects_vec =
-        projects_value["data"]["allProjects"].as_array().unwrap().to_owned();
-
-    Ok(projects_vec)
-}
-
-pub struct Projects {
-    list: Vec<Value>,
-    link: ComponentLink<Self>,
-}
-
+#[derive(Debug)]
 pub enum Msg {
-    UpdateList(Vec<Value>),
+    PassRequest,
+    ReceiveResponse(Result<Vec<Value>, anyhow::Error>),
+}
+
+#[derive(Debug)]
+pub struct Projects {
+    fetch_task: Option<FetchTask>,
+    list: Option<Vec<Value>>,
+    link: ComponentLink<Self>,
+    error: Option<String>,
+}
+
+impl Projects {
+    fn view_fetching(&self) -> Html {
+        if self.fetch_task.is_some() {
+            html! { <p>{ "Fetching data..." }</p> }
+        } else {
+            html! { <p></p> }
+        }
+    }
+
+    fn view_data(&self) -> Html {
+        match self.list {
+            Some(ref list) => {
+                let projects = list.iter().map(|project| {
+                    html! {
+                        <div>
+                            <li>
+                                <strong>{ &project["subject"].as_str().unwrap() }</strong>
+                            </li>
+                            <ul>
+                                <li>{ &project["userId"].as_str().unwrap() }</li>
+                                <li>{ &project["id"].as_str().unwrap() }</li>
+                                <li>
+                                    <a href={ project["website"].as_str().unwrap().to_owned() }>
+                                        { &project["website"].as_str().unwrap() }
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                });
+
+                html! {
+                    <ul>
+                        { for projects }
+                    </ul>
+                }
+            }
+            None => {
+                html! {
+                     <p>
+                        { "No data." }
+                     </p>
+                }
+            }
+        }
+    }
+
+    fn view_error(&self) -> Html {
+        if let Some(ref error) = self.error {
+            html! { <p>{ error.clone() }</p> }
+        } else {
+            html! {}
+        }
+    }
 }
 
 impl Component for Projects {
@@ -67,58 +96,91 @@ impl Component for Projects {
     type Properties = ();
 
     fn create(_props: Self::Properties, link: ComponentLink<Self>) -> Self {
-        Self { list: Vec::new(), link }
+        Self { fetch_task: None, list: None, link, error: None }
     }
 
     fn rendered(&mut self, first_render: bool) {
         let link = self.link.clone();
         if first_render {
             spawn_local(async move {
-                let res = fetch_projects().await;
-                link.send_message(Msg::UpdateList(res.unwrap()))
+                link.send_message(Msg::PassRequest);
             });
         }
     }
 
-    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message) -> bool {
         match msg {
-            Msg::UpdateList(res) => {
-                self.list = res;
+            Msg::PassRequest => {
+                // build graphql query body
+                let build_query =
+                    AllProjects::build_query(all_projects::Variables {});
+                let query = Json(&build_query);
+
+                // build the request
+                let request = Request::post(&gql_uri())
+                    .body(query)
+                    .expect("Could not build request.");
+
+                // construct a callback
+                let callback = self.link.callback(
+                    |response: Response<Result<String, anyhow::Error>>| {
+                        let resp_body = response.into_body();
+                        let resp_str = resp_body.as_ref().unwrap();
+
+                        let projects_value: Value =
+                            from_str(&resp_str).unwrap();
+                        let projects_vec = projects_value["data"]
+                            ["allProjects"]
+                            .as_array()
+                            .unwrap()
+                            .to_owned();
+
+                        Msg::ReceiveResponse(Ok(projects_vec))
+                    },
+                );
+
+                // pass the request and callback to the fetch service
+                let task = FetchService::fetch(request, callback)
+                    .expect("failed to start request");
+
+                // store the task so it isn't canceled immediately
+                self.fetch_task = Some(task);
+
+                // redraw so that the page displays a 'fetching...' message
+                true
+            }
+            Msg::ReceiveResponse(data) => {
+                match data {
+                    Ok(projects_vec) => {
+                        self.list = Some(projects_vec);
+                    }
+                    Err(error) => self.error = Some(error.to_string()),
+                }
+                self.fetch_task = None;
+
+                // redraw so that the page displays projects data
                 true
             }
         }
     }
 
     fn change(&mut self, _props: Self::Properties) -> ShouldRender {
+        let link = self.link.clone();
+        spawn_local(async move {
+            link.send_message(Msg::PassRequest);
+        });
+
         false
     }
 
     fn view(&self) -> Html {
-        let projects = self.list.iter().map(|project| {
-            html! {
-                <div>
-                    <li>
-                        <strong>{ &project["subject"].as_str().unwrap() }</strong>
-                    </li>
-                    <ul>
-                        <li>{ &project["userId"].as_str().unwrap() }</li>
-                        <li>{ &project["id"].as_str().unwrap() }</li>
-                        <li>
-                            <a href={ project["website"].as_str().unwrap().to_owned() }>
-                                { &project["website"].as_str().unwrap() }
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            }
-        });
-
         html! {
             <>
                 <h1>{ "all projects" }</h1>
-                <ul>
-                    { for projects }
-                </ul>
+
+                { self.view_fetching() }
+                { self.view_data() }
+                { self.view_error() }
             </>
         }
     }

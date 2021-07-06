@@ -6,7 +6,11 @@ use wasm_bindgen_futures::{spawn_local, JsFuture};
 use yew::web_sys::{Request, RequestInit, RequestMode, Response};
 use yew::{html, Component, ComponentLink, Html, ShouldRender};
 
-use crate::util::common::gql_uri;
+use crate::util::{constant::ObjectId, common::gql_uri};
+
+/////////////////////////////////////////
+// Fetch users data use `yew::web_sys` //
+/////////////////////////////////////////
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct FetchError {
@@ -26,7 +30,6 @@ impl From<JsValue> for FetchError {
     response_derives = "Debug"
 )]
 struct AllUsers;
-type ObjectId = String;
 
 async fn fetch_users() -> Result<Vec<Value>, FetchError> {
     let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImFzZmZhQGRzYWZhLmNvbSIsInVzZXJuYW1lIjoi5a-G56CBMTExIiwiZXhwIjoxMDAwMDAwMDAwMH0.NyEN13J5trkn9OlRqWv2xMHshysR9QPWclo_-q1cbF4y_9rbkpSI6ern-GgKIh_ED0Czk98M1fJ6tzLczbdptg";
@@ -40,7 +43,7 @@ async fn fetch_users() -> Result<Vec<Value>, FetchError> {
     req_opts.body(Some(&JsValue::from_str(&query.to_string())));
     req_opts.mode(RequestMode::Cors); // 可以不写，默认为 Cors
 
-    let request = Request::new_with_str_and_init(&gql_uri().await, &req_opts)?;
+    let request = Request::new_with_str_and_init(&gql_uri(), &req_opts)?;
 
     let window = yew::utils::window();
     let resp_value =

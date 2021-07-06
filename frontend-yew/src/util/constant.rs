@@ -3,6 +3,8 @@ use toml::from_str;
 use serde::Deserialize;
 use lazy_static::lazy_static;
 
+pub type ObjectId = String;
+
 lazy_static! {
     // CFG variables defined in cfg.toml file
     pub static ref CFG: HashMap<&'static str, String> = {
