@@ -1,7 +1,7 @@
 use futures::stream::StreamExt;
 use mongodb::{
     Database,
-    bson::{Bson, Document, doc, to_bson, from_bson},
+    bson::{Document, doc, to_document, from_document},
 };
 use async_graphql::{Error, ErrorExtensions};
 use jsonwebtoken::{encode, Algorithm, EncodingKey, Header};
@@ -12,7 +12,7 @@ use crate::util::{
 };
 use crate::users::models::{User, NewUser, SignInfo};
 
-// get user info by email
+// Find user info by email
 pub async fn get_user_by_email(db: Database, email: &str) -> GqlResult<User> {
     let coll = db.collection::<Document>("users");
 
@@ -20,19 +20,20 @@ pub async fn get_user_by_email(db: Database, email: &str) -> GqlResult<User> {
 
     if let Ok(user_document_exist) = exist_document {
         if let Some(user_document) = user_document_exist {
-            let user: User = from_bson(Bson::Document(user_document)).unwrap();
+            let user: User = from_document(user_document)?;
             Ok(user)
         } else {
-            Err(Error::new("2-email")
-                .extend_with(|_, e| e.set("details", "Email not found")))
+            Err(Error::new("Email not found").extend_with(|err, eev| {
+                eev.set("details", err.message.as_str())
+            }))
         }
     } else {
-        Err(Error::new("1-email")
-            .extend_with(|_, e| e.set("details", "Error searching mongodb")))
+        Err(Error::new("Error searching mongodb")
+            .extend_with(|err, eev| eev.set("details", err.message.as_str())))
     }
 }
 
-// get user info by username
+// Find user info by username
 pub async fn get_user_by_username(
     db: Database,
     username: &str,
@@ -43,18 +44,20 @@ pub async fn get_user_by_username(
 
     if let Ok(user_document_exist) = exist_document {
         if let Some(user_document) = user_document_exist {
-            let user: User = from_bson(Bson::Document(user_document)).unwrap();
+            let user: User = from_document(user_document)?;
             Ok(user)
         } else {
-            Err(Error::new("4-username")
-                .extend_with(|_, e| e.set("details", "Username not found")))
+            Err(Error::new("Username not found").extend_with(|err, eev| {
+                eev.set("details", err.message.as_str())
+            }))
         }
     } else {
-        Err(Error::new("3-username")
-            .extend_with(|_, e| e.set("details", "Error searching mongodb")))
+        Err(Error::new("Error searching mongodb")
+            .extend_with(|err, eev| eev.set("details", err.message.as_str())))
     }
 }
 
+// Create new user
 pub async fn user_register(
     db: Database,
     mut new_user: NewUser,
@@ -66,36 +69,28 @@ pub async fn user_register(
 
     if self::get_user_by_email(db.clone(), &new_user.email).await.is_ok() {
         Err(Error::new("email exists")
-            .extend_with(|_, e| e.set("details", "1_EMAIL_EXIStS")))
+            .extend_with(|err, eev| eev.set("details", err.message.as_str())))
     } else if self::get_user_by_username(db.clone(), &new_user.username)
         .await
         .is_ok()
     {
         Err(Error::new("username exists")
-            .extend_with(|_, e| e.set("details", "2_USERNAME_EXISTS")))
+            .extend_with(|err, eev| eev.set("details", err.message.as_str())))
     } else {
         new_user.cred =
             super::cred::cred_encode(&new_user.username, &new_user.cred).await;
-        let new_user_bson = to_bson(&new_user).unwrap();
+        let new_user_document = to_document(&new_user)?;
 
-        if let Bson::Document(document) = new_user_bson {
-            // Insert into a MongoDB collection
-            coll.insert_one(document, None)
-                .await
-                .expect("Failed to insert into a MongoDB collection!");
+        // Insert into a MongoDB collection
+        coll.insert_one(new_user_document, None)
+            .await
+            .expect("Failed to insert into a MongoDB collection!");
 
-            self::get_user_by_email(db.clone(), &new_user.email).await
-        } else {
-            Err(Error::new("5-register").extend_with(|_, e| {
-                e.set(
-                    "details",
-                    "Error converting the BSON object into a MongoDB document",
-                )
-            }))
-        }
+        self::get_user_by_email(db.clone(), &new_user.email).await
     }
 }
 
+// User sign in
 pub async fn user_sign_in(
     db: Database,
     unknown_user: NewUser,
@@ -143,15 +138,13 @@ pub async fn user_sign_in(
                 &EncodingKey::from_secret(site_key),
             ) {
                 Ok(t) => t,
-                Err(error) => {
-                    Err(Error::new("7-user-sign-in").extend_with(|_, e| {
-                        e.set(
-                            "details",
-                            format!("Error to encode token: {}", error),
-                        )
-                    }))
-                    .unwrap()
-                }
+                Err(error) => Err(Error::new(format!(
+                    "Error to encode token: {}",
+                    error
+                ))
+                .extend_with(|err, eev| {
+                    eev.set("details", err.message.as_str())
+                }))?,
             };
 
             let sign_info = SignInfo {
@@ -161,15 +154,17 @@ pub async fn user_sign_in(
             };
             Ok(sign_info)
         } else {
-            Err(Error::new("user_sign_in")
-                .extend_with(|_, e| e.set("details", "Invalid credential")))
+            Err(Error::new("Invalid credential").extend_with(|err, eev| {
+                eev.set("details", err.message.as_str())
+            }))
         }
     } else {
-        Err(Error::new("user_sign_in")
-            .extend_with(|_, e| e.set("details", "User not exist")))
+        Err(Error::new("User not exist")
+            .extend_with(|err, eev| eev.set("details", err.message.as_str())))
     }
 }
 
+// Find all users
 pub async fn all_users(db: Database, token: &str) -> GqlResult<Vec<User>> {
     let token_data = token_data(token).await;
     if token_data.is_ok() {
@@ -184,31 +179,22 @@ pub async fn all_users(db: Database, token: &str) -> GqlResult<Vec<User>> {
         while let Some(result) = cursor.next().await {
             match result {
                 Ok(document) => {
-                    let user = from_bson(Bson::Document(document)).unwrap();
+                    let user = from_document(document)?;
                     users.push(user);
                 }
                 Err(error) => {
-                    Err(Error::new("6-all-users").extend_with(|_, e| {
-                        e.set(
-                            "details",
-                            format!("Error to find doc: {}", error),
-                        )
-                    }))
-                    .unwrap()
+                    Err(Error::new(format!("Error to find doc: {}", error))
+                        .extend_with(|err, eev| {
+                            eev.set("details", err.message.as_str())
+                        }))?
                 }
             }
         }
 
-        if users.len() > 0 {
-            Ok(users)
-        } else {
-            Err(Error::new("6-all-users")
-                .extend_with(|_, e| e.set("details", "No records")))
-        }
+        Ok(users)
     } else {
-        Err(Error::new("6-all-users").extend_with(|_, e| {
-            e.set("details", format!("{}", token_data.err().unwrap()))
-        }))
+        Err(Error::new(format!("{}", token_data.err().unwrap()))
+            .extend_with(|err, eev| eev.set("details", err.message.as_str())))
     }
 }
 
@@ -246,22 +232,22 @@ pub async fn user_change_password(
 
                 Ok(user)
             } else {
-                Err(Error::new("user_change_password").extend_with(|_, e| {
-                    e.set("details", "Error verifying current passwordd")
-                }))
+                Err(Error::new("Error verifying current password").extend_with(
+                    |err, eev| eev.set("details", err.message.as_str()),
+                ))
             }
         } else {
-            Err(Error::new("user_change_password")
-                .extend_with(|_, e| e.set("details", "User not exist")))
+            Err(Error::new("User not exist").extend_with(|err, eev| {
+                eev.set("details", err.message.as_str())
+            }))
         }
     } else {
-        Err(Error::new("user_change_password").extend_with(|_, e| {
-            e.set("details", format!("{}", token_data.err().unwrap()))
-        }))
+        Err(Error::new(format!("{}", token_data.err().unwrap()))
+            .extend_with(|err, eev| eev.set("details", err.message.as_str())))
     }
 }
 
-// update user profile
+// Update user profile
 pub async fn user_update_profile(
     db: Database,
     new_user: NewUser,
@@ -277,21 +263,24 @@ pub async fn user_update_profile(
             user.email = new_user.email.to_lowercase();
             user.username = new_user.username.to_lowercase();
 
-            let user_bson = to_bson(&user).unwrap();
-            let user_doc = user_bson.as_document().unwrap().to_owned();
+            let user_document = to_document(&user)?;
 
-            coll.find_one_and_replace(doc! {"_id": &user._id}, user_doc, None)
-                .await
-                .expect("Failed to replace a MongoDB collection!");
+            coll.find_one_and_replace(
+                doc! {"_id": &user._id},
+                user_document,
+                None,
+            )
+            .await
+            .expect("Failed to replace a MongoDB collection!");
 
             Ok(user)
         } else {
-            Err(Error::new("user_update_profile")
-                .extend_with(|_, e| e.set("details", "User not exist")))
+            Err(Error::new("User not exist").extend_with(|err, eev| {
+                eev.set("details", err.message.as_str())
+            }))
         }
     } else {
-        Err(Error::new("user_update_profile").extend_with(|_, e| {
-            e.set("details", format!("{}", token_data.err().unwrap()))
-        }))
+        Err(Error::new(format!("{}", token_data.err().unwrap()))
+            .extend_with(|err, eev| eev.set("details", err.message.as_str())))
     }
 }

@@ -1,15 +1,17 @@
 use futures::stream::StreamExt;
 use mongodb::{
     Database,
-    bson::oid::ObjectId,
-    bson::{Bson, Document, doc, to_bson, from_bson},
+    bson::{oid::ObjectId, Document, doc, to_document, from_document},
 };
-use async_graphql::{Error, ErrorExtensions};
 
 use crate::util::constant::GqlResult;
 use crate::projects::models::{Project, NewProject};
 
-pub async fn add_project(db: Database, new_project: NewProject) -> Project {
+// Create new project
+pub async fn add_project(
+    db: Database,
+    new_project: NewProject,
+) -> GqlResult<Project> {
     let coll = db.collection::<Document>("projects");
 
     let exist_document = coll
@@ -17,23 +19,16 @@ pub async fn add_project(db: Database, new_project: NewProject) -> Project {
             doc! {"user_id": &new_project.user_id,  "subject": &new_project.subject},
             None,
         )
-        .await
-        .unwrap();
+        .await?;
     if let Some(_document) = exist_document {
         println!("MongoDB document is exist!");
     } else {
-        let new_project_bson = to_bson(&new_project).unwrap();
+        let new_project_document = to_document(&new_project)?;
 
-        if let Bson::Document(document) = new_project_bson {
-            // Insert into a MongoDB collection
-            coll.insert_one(document, None)
-                .await
-                .expect("Failed to insert into a MongoDB collection!");
-        } else {
-            println!(
-                "Error converting the BSON object into a MongoDB document"
-            );
-        };
+        // Insert into a MongoDB collection
+        coll.insert_one(new_project_document, None)
+            .await
+            .expect("Failed to insert into a MongoDB collection!");
     }
 
     let project_document = coll
@@ -45,10 +40,11 @@ pub async fn add_project(db: Database, new_project: NewProject) -> Project {
         .expect("Document not found")
         .unwrap();
 
-    let project: Project = from_bson(Bson::Document(project_document)).unwrap();
-    project
+    let project: Project = from_document(project_document)?;
+    Ok(project)
 }
 
+// Find all projects
 pub async fn all_projects(db: Database) -> GqlResult<Vec<Project>> {
     let coll = db.collection::<Document>("projects");
 
@@ -61,7 +57,7 @@ pub async fn all_projects(db: Database) -> GqlResult<Vec<Project>> {
     while let Some(result) = cursor.next().await {
         match result {
             Ok(document) => {
-                let project = from_bson(Bson::Document(document)).unwrap();
+                let project = from_document(document)?;
                 projects.push(project);
             }
             Err(error) => {
@@ -70,14 +66,10 @@ pub async fn all_projects(db: Database) -> GqlResult<Vec<Project>> {
         }
     }
 
-    if projects.len() > 0 {
-        Ok(projects)
-    } else {
-        Err(Error::new("7-all-projects")
-            .extend_with(|_, e| e.set("details", "No records")))
-    }
+    Ok(projects)
 }
 
+// Find all projects by user
 pub async fn all_projects_by_user(
     db: Database,
     user_id: ObjectId,
@@ -93,7 +85,7 @@ pub async fn all_projects_by_user(
     while let Some(result) = cursor.next().await {
         match result {
             Ok(document) => {
-                let project = from_bson(Bson::Document(document)).unwrap();
+                let project = from_document(document)?;
                 projects.push(project);
             }
             Err(error) => {

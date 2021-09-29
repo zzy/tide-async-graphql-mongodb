@@ -59,7 +59,7 @@ impl MutationRoot {
         &self,
         ctx: &Context<'_>,
         new_project: NewProject,
-    ) -> Project {
+    ) -> GqlResult<Project> {
         let db = ctx.data_unchecked::<DataSource>().db_budshome.clone();
         projects::services::add_project(db, new_project).await
     }
