@@ -1,8 +1,14 @@
 # tide-async-graphql-mongodb
 
-Clean boilerplate for graphql services using tide, rhai, async-graphql, surf, graphql-client, yew, handlebars-rust, jsonwebtoken, and mongodb.
+Clean boilerplate for graphql services, wasm/yew frontend, handlebars frontend. 
+
+Using tide, rhai, async-graphql, surf, graphql-client, yew, handlebars, jsonwebtoken, and mongodb. 
 
 See also: https://github.com/zzy/surfer
+
+Demo site:
+- [niqin.com - NiQin Books Platform | 泥芹书馆](https://niqin.com)
+- [gaidun.com - Project Matchmaking | 项目对接](https://gaidun.com)
 
 ## Features
 
@@ -22,10 +28,10 @@ See also: https://github.com/zzy/surfer
 
 ## Stacks
 
-- [Rust](https://www.rust-lang.org) - [中文资料集萃](https://budshome.com)
-- [Tide](https://crates.io/crates/tide) - [中文文档](https://tide.budshome.com)
+- [Rust](https://www.rust-lang.org) - [中文资料集萃](https://niqin.com)
+- [Tide](https://crates.io/crates/tide) - [中文文档](https://tide-book.niqin.com)
 - [rhai](https://crates.io/crates/rhai) - Embedded Scripting for Rust
-- [async-graphql](https://crates.io/crates/async-graphql) - [中文文档](https://async-graphql.budshome.com)
+- [async-graphql](https://crates.io/crates/async-graphql) - [中文文档](https://async-graphql.niqin.com)
 - [mongodb & mongo-rust-driver](https://crates.io/crates/mongodb)
 - [Surf](https://crates.io/crates/surf)
 - [yew](https://crates.io/crates/yew)
