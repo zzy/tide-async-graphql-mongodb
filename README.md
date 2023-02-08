@@ -4,7 +4,10 @@ Clean boilerplate for graphql services, wasm/yew frontend, handlebars frontend.
 
 Using tide, rhai, async-graphql, surf, graphql-client, yew, handlebars, jsonwebtoken, and mongodb. 
 
-See also: https://github.com/zzy/surfer
+See also: 
+- https://github.com/zzy/surfer - Simple WIP blog & upcoming upgrades.
+- https://github.com/piexue/piexue.com - Multi-language CMS based on the Rust web stacks.
+
 
 Demo site:
 - [niqin.com - NiQin Books Platform | 泥芹书馆](https://niqin.com)
