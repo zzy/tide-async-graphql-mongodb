@@ -8,12 +8,11 @@ See also:
 - https://github.com/zzy/surfer - Simple WIP blog & upcoming upgrades.
 - https://github.com/piexue/piexue.com - Multi-language CMS based on the Rust web stacks.
 
-
-Demo site:
-- [niqin.com - NiQin Books Platform | 泥芹书馆](https://niqin.com)
-- [piexue.com - Project Matchmaking | 项目对接](https://piexue.com)
-
 ## Features
+
+- Demo site:
+  - [niqin.com - NiQin Books Platform | 泥芹书馆](https://niqin.com)
+  - [piexue.com - Project Matchmaking | 项目对接](https://piexue.com)
 
 - Graphql Services
   - [x] User register
