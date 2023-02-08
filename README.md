@@ -8,7 +8,7 @@ See also: https://github.com/zzy/surfer
 
 Demo site:
 - [niqin.com - NiQin Books Platform | 泥芹书馆](https://niqin.com)
-- [gaidun.com - Project Matchmaking | 项目对接](https://gaidun.com)
+- [piexue.com - Project Matchmaking | 项目对接](https://piexue.com)
 
 ## Features
 
